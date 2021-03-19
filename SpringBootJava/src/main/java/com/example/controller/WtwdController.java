@@ -4,15 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.lang.Result;
-import com.example.entity.DeviceList;
 import com.example.entity.DeviceLogList;
+import com.example.entity.WtwdList;
+import com.example.service.DeviceLogService;
+import com.example.service.WtwdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.service.DeviceLogService;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,27 +22,17 @@ import java.util.List;
  * 设备log
  */
 @RestController
-public class DeviceLogController {
+public class WtwdController {
     @Autowired
-    DeviceLogService deviceLogService;
+    WtwdService wtwdService;
 
-    @GetMapping("/devlogList")
+    @GetMapping("/wtwdList")
     public Result logiest(Integer currentPage) {
         if (currentPage == null || currentPage < 1) {
             currentPage = 1;
         }
         Page page = new Page(currentPage, 100);
-        QueryWrapper<DeviceLogList> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByAsc("Id");
-
-//        Date dNow = new Date();
-//        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        String endtime = ft.format(dNow);
-//        String starttime = ft.format(new Date(dNow.getTime() - 1 * 24 * 60 * 60 * 1000));
-//        queryWrapper.between("addtime", starttime, endtime);
-//        System.out.println("当前时间为: " + endtime+""+starttime); //默认24小时之前
-
-        IPage pageData = deviceLogService.page(page,queryWrapper);
+        IPage pageData = wtwdService.page(page, new QueryWrapper<WtwdList>().orderByAsc("Id"));
 
         return Result.succ("操作成功！", pageData);
     }
@@ -56,27 +45,27 @@ public class DeviceLogController {
      * @date 2021/3/18 11:06
      * @message 查询
      */
-    @GetMapping("/searchlog")
+    @GetMapping("/wtwdlog")
     public Result searchData(String deviceid, Integer currentPage, String starttime, String endtime) {
 
         if (currentPage == null || currentPage < 1) {
             currentPage = 1;
         }
         Page page = new Page(currentPage, 100);
-        QueryWrapper<DeviceLogList> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<WtwdList> queryWrapper = new QueryWrapper<>();
         if (deviceid != null && deviceid.length() != 0) {
             queryWrapper.like("deviceid", deviceid);
         }
         if (starttime != null && starttime.length() != 0) {
-            queryWrapper.between("addtime", starttime, endtime);
+            queryWrapper.between("testDatetime", starttime, endtime);
         }
-        queryWrapper.orderByDesc("addtime");//时间降序  orderByDesc降序 orderByAsc升序
+        queryWrapper.orderByDesc("testDatetime");//时间降序  orderByDesc降序 orderByAsc升序
 
-        List<DeviceLogList> deviceLogLists = deviceLogService.list(queryWrapper);
+        List<WtwdList> deviceLogLists = wtwdService.list(queryWrapper);
         if (deviceLogLists == null || deviceLogLists.size() == 0) {
             return Result.fail("没有数据！");
         }
-        IPage devLists = deviceLogService.page(page, queryWrapper);
+        IPage devLists = wtwdService.page(page, queryWrapper);
 
         return Result.succ("操作成功", devLists);
     }

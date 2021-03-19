@@ -82,6 +82,7 @@
               @click="login('ruleForm')"
               v-if="log"
             >
+              <!-- @click="login('ruleForm')" -->
               立即登录
             </el-button>
             <el-button
@@ -195,6 +196,7 @@ export default {
             .then((res) => {
               console.log(res);
               const { code } = res.data;
+
               if (code == 200) {
                 console.log(res);
                 const jwt = res.headers["authorization"];
@@ -222,6 +224,7 @@ export default {
             })
             .catch((err) => {
               console.error("抛出异常" + err);
+
             });
         } else {
           console.log("error submit!!");
@@ -246,9 +249,6 @@ export default {
             .then((res) => {
               const { code } = res.data;
               if (code == 200) {
-                // this.$router.push({
-                //   path: "/home",
-                // });
                 this.log = true;
                 this.ruleForm.userName = options.username;
                 this.ruleForm.userPwd = options.username;

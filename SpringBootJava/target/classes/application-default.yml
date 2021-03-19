@@ -2,9 +2,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/tudemo?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: root
-    password:
+    url: jdbc:mysql://172.50.57.216:3306/wtwdiotdb?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: uceerds
+    password: XdJmWiyrJu7D
 shiro-redis:
   enabled: true
   redis-manager:

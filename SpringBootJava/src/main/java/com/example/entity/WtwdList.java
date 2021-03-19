@@ -17,10 +17,8 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-//@TableName("tb_device_list")
 @TableName("tb_device_list_re705")
-
-public class DeviceList implements Serializable {
+public class WtwdList implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(value = "Id", type = IdType.AUTO)
     private Long Id;

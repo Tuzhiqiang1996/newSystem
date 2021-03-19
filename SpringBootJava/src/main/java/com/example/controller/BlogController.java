@@ -56,12 +56,14 @@ public class BlogController {
         Assert.notNull(blog, "该博客已删除！");
         return Result.succ(blog);
     }
+
     /**
      * [com.example.entity.Blog]
+     *
+     * @return com.example.common.lang.Result
      * @author Tu
      * @date 2021/3/16 10:25
      * @message 修改功能
-     * @return com.example.common.lang.Result
      */
     @RequiresAuthentication
     @PostMapping("/blog/edit")
@@ -99,16 +101,18 @@ public class BlogController {
         blogService.saveOrUpdate(temp);
         return Result.succ("操作成功", null);
     }
+
     /**
      * [com.example.entity.Blog]
+     *
+     * @return com.example.common.lang.Result
      * @author Tu
      * @date 2021/3/16 10:08
      * @message 新增功能
      * BeanUtil.copyProperties(blog, temp, "id", "userId", "created", "status"); 为曾
-     *  BeanUtil.copyProperties(blog, temp); 为改
-     *  新增功能要添加userID
-     *  上面的修改功能 注释掉useID
-     * @return com.example.common.lang.Result
+     * BeanUtil.copyProperties(blog, temp); 为改
+     * 新增功能要添加userID
+     * 上面的修改功能 注释掉useID
      */
     @PostMapping("/blog/add")
     public Result editadd(@Validated @RequestBody Blog blog) {
@@ -121,6 +125,7 @@ public class BlogController {
         blogService.saveOrUpdate(temp);
         return Result.succ("操作成功", null);
     }
+
     /**
      * 删除功能
      *

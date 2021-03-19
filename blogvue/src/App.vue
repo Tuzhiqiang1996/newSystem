@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 
@@ -27,7 +29,7 @@ body {
   margin: 0;
   padding: 0;
   /* background: url("./assets/image/11.jpg")  ; */
-  background-size:   100%;
+  background-size: 100%;
 }
 html {
   /* height: 100%; */
