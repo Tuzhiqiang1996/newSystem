@@ -183,6 +183,9 @@
       <div class="fonter">
         <!-- layout="prev, pager, next" -->
         <div class="fchild">
+          0次测试 <el-tag>{{ num0 }} </el-tag>
+        </div>
+        <div class="fchild">
           一次测试 <el-tag>{{ num1 }} </el-tag>
         </div>
         <div class="fchild">
@@ -216,6 +219,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      num0: 0,
       num1: 0,
       num2: 0,
       num3: 0,
@@ -283,6 +287,15 @@ export default {
               picker.$emit("pick", [start, end]);
             },
           },
+          {
+            text: "最近六个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
+              picker.$emit("pick", [start, end]);
+            },
+          },
         ],
       },
     };
@@ -313,8 +326,6 @@ export default {
         time1 == undefined
           ? url
           : url1;
-      console.log("1", time1 == "");
-      console.log("2", time1 == undefined);
 
       this.$axios
         .get(urls)
@@ -330,6 +341,7 @@ export default {
             this.$nextTick(() => {
               this.$refs.filterTable.bodyWrapper.scrollTop = 0;
             });
+            this.num();
           } else {
             this.$message({
               message: res.data.msg,
@@ -347,13 +359,15 @@ export default {
       let time2 = this.formInline.valuetime && this.formInline.valuetime[1];
       let url = `/statistical?currentPage=${num}&starttime=${
         time1 || ""
-      }&endtime=${time2 || ""}&num=${count}`;
+      }&endtime=${time2 || ""}&num=${count}&orderId=${this.formInline.orderId}`;
       this.$axios
         .get(url)
         .then((res) => {
           const { code, data } = res.data;
           if (code == 200) {
-            if (count == 1) {
+             if (count == 0) {
+              this.num0 = data.total;
+            } else if (count == 1) {
               this.num1 = data.total;
             } else if (count == 2) {
               this.num2 = data.total;
@@ -374,16 +388,10 @@ export default {
     },
     onSubmit() {
       this.page(1);
-      this.numCount(1, 1);
-      this.numCount(1, 2);
-      this.numCount(1, 3);
     },
     btntime() {
       if (this.formInline.valuetime) {
         this.page(1);
-        this.numCount(1, 1);
-        this.numCount(1, 2);
-        this.numCount(1, 3);
       }
     },
     filterTag(value, row) {
@@ -394,13 +402,16 @@ export default {
       console.log(filters.tag[0]);
       // this.page(1,filters.tag[0])
     },
+    num(){
+      this.numCount(1, 0);
+      this.numCount(1, 1);
+      this.numCount(1, 2);
+      this.numCount(1, 3);
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     this.page(1);
-    this.numCount(1, 1);
-    this.numCount(1, 2);
-    this.numCount(1, 3);
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},

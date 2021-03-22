@@ -4,15 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.common.lang.Result;
-import com.example.entity.DeviceList;
 import com.example.entity.DeviceLogList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.service.DeviceLogService;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,7 +74,9 @@ public class DeviceLogController {
             return Result.fail("没有数据！");
         }
         IPage devLists = deviceLogService.page(page, queryWrapper);
-
+        if (devLists == null ) {
+            return Result.fail("没有数据！");
+        }
         return Result.succ("操作成功", devLists);
     }
 }

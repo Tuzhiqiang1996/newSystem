@@ -35,7 +35,7 @@ public class DeviceListController {
         }
         Page page = new Page(currentPage, 100);
         QueryWrapper<DeviceList> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByAsc("Id");
+
 
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -44,6 +44,7 @@ public class DeviceListController {
 
 //        System.out.println("当前时间为: " + endtime+""+starttime); 默认24小时之前
         queryWrapper.between("test_datetime", starttime, endtime);
+        queryWrapper.orderByDesc("test_datetime");
         IPage pageData = deviceListService.page(page, queryWrapper);
         return Result.succ("操作成功！", pageData);
     }
@@ -104,15 +105,27 @@ public class DeviceListController {
         }
         Page page = new Page(currentPage, 100);
         QueryWrapper<DeviceList> queryWrapper = new QueryWrapper<>();
-
+        if (orderId != null && orderId.length() != 0) {
+            queryWrapper.eq("order_id", orderId);
+        }
         queryWrapper.eq("check_count", num);
-        if(num>=3){
+        if (num >= 3) {
             queryWrapper.ge("check_count", num);
         }
-        if (starttime != null && starttime.length() != 0) {
+        if(starttime != null && starttime.length() != 0) {
+            queryWrapper.between("test_datetime", starttime, endtime);
+        } else {
+            Date dNow = new Date();
+            SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            endtime = ft.format(dNow);
+            starttime = ft.format(new Date(dNow.getTime() - 1 * 24 * 60 * 60 * 1000));
             queryWrapper.between("test_datetime", starttime, endtime);
         }
+
         IPage devLists = deviceListService.page(page, queryWrapper);
+        if (devLists == null ) {
+            return Result.fail("没有数据！");
+        }
         return Result.succ("操作成功", devLists);
     }
 }
