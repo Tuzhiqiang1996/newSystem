@@ -108,10 +108,13 @@ public class DeviceListController {
         if (orderId != null && orderId.length() != 0) {
             queryWrapper.eq("order_id", orderId);
         }
-        queryWrapper.eq("check_count", num);
-        if (num >= 3) {
-            queryWrapper.ge("check_count", num);
+        if (num != null ) {
+            queryWrapper.eq("check_count", num);
+            if (num >= 3) {
+                queryWrapper.ge("check_count", num);
+            }
         }
+
         if(starttime != null && starttime.length() != 0) {
             queryWrapper.between("test_datetime", starttime, endtime);
         } else {

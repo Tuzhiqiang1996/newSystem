@@ -1,17 +1,17 @@
 <!--  -->
 <template>
   <div class="">
-    <div style="margin: 0 auto; display: table">
-      <div>
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="设备id">
+    <div  >
+      <div class="top">
+        <el-form :inline="true" :model="formInline"     ref="formInline" class="demo-form-inline">
+          <el-form-item label="设备id" prop="deviceid">
             <el-input
               v-model="formInline.deviceid"
               placeholder="设备id"
               clearable
             ></el-input>
           </el-form-item>
-          <el-form-item>
+         <el-form-item label="时间范围" prop="valuetime">
             <el-date-picker
               v-model="formInline.datatime"
               type="datetimerange"
@@ -27,52 +27,51 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
+      <div  class="tablebox">
+
       <el-table
         ref="filterTable"
         style="width: 100%"
         :data="tableData"
         height="624"
-        stripe
-        border
         v-loading="loading"
       >
-        <el-table-column prop="id" label="Id" width="80"> </el-table-column>
+        <el-table-column prop="id" label="Id"  > </el-table-column>
         <el-table-column
           prop="deviceid"
           show-overflow-tooltip
           fixed
           label="设备id"
-          width="180"
+
         >
         </el-table-column>
         <el-table-column
           prop="pcinfo"
           show-overflow-tooltip
           label="项目"
-          width="180"
+
         >
         </el-table-column>
         <el-table-column
           prop="addtime"
           show-overflow-tooltip
           label="时间"
-          width="180"
+
         >
         </el-table-column>
         <el-table-column
           prop="testData"
           show-overflow-tooltip
           label="信息"
-          width="550"
         >
         </el-table-column>
         <el-table-column
           prop="testResult"
           label="结果"
-          width="100"
           fixed="right"
         >
           <template slot-scope="scope">
@@ -97,9 +96,10 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </div>
     <div>
-      <div style="text-align: center; padding: 20px 0">
+      <div class="fonter">
         <el-pagination
           layout="total, prev, pager, next, jumper"
           :total="total"
@@ -220,12 +220,16 @@ export default {
     },
     onSubmit() {
       this.page(1);
-      console.log(this.formInline.deviceid);
+      // console.log(this.formInline.deviceid);
     },
     btntime() {
       if (this.formInline.datatime) {
         this.page(1);
       }
+    },
+      resetForm() {
+      this.page(1);
+      this.$refs.formInline.resetFields();
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -245,4 +249,39 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+.top {
+  display: flex;
+  align-items: center;
+  margin: 0 0 10px 0;
+  background: #fff;
+
+  >>> .el-form-item {
+    margin-bottom: 0;
+  }
+}
+.demo-form-inline {
+  padding: 24px;
+}
+.tablebox{
+  padding-left: 24px;
+   background: #fff;
+}
+.fonter {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+
+}
+.fonter {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+
+}
 </style>

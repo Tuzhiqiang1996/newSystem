@@ -1,25 +1,28 @@
 <!--  -->
 <template>
-  <div class="">
-    <div style="margin: 0 auto; display: table">
+  <div class="" style="width: 100%">
+    <div style="">
       <div class="top">
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="订单id">
+        <el-form
+          :inline="true"
+          :model="formInline"
+          ref="formInline"
+          class="demo-form-inline"
+        >
+          <el-form-item label="订单id" prop="orderId">
             <el-input
               v-model="formInline.orderId"
               placeholder="订单id"
-              clearable
             ></el-input>
           </el-form-item>
-          <el-form-item label="设备id">
+          <el-form-item label="设备id" prop="deviceid">
             <el-input
               v-model="formInline.deviceid"
               placeholder="设备id"
-              clearable
             ></el-input>
           </el-form-item>
 
-          <el-form-item>
+          <el-form-item label="时间范围" prop="valuetime">
             <el-date-picker
               v-model="formInline.valuetime"
               type="datetimerange"
@@ -31,65 +34,40 @@
               @change="btntime"
               value-format="yyyy-MM-dd HH:mm:ss"
             >
-            </el-date-picker>
-          </el-form-item>
+            </el-date-picker
+          ></el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
+      <div class="tablebox">
+
       <el-table
         ref="filterTable"
         style="width: 100%"
         :data="tableData"
         height="629"
-        stripe
-        border
+
         v-loading="loading"
         @filter-change="handleFilterChange"
       >
+        <el-table-column prop="sn" show-overflow-tooltip      label="序列号">
+        </el-table-column>
         <el-table-column prop="id" label="Id" width="80"> </el-table-column>
-        <el-table-column
-          prop="sn"
-          show-overflow-tooltip
-          fixed
-          label="序列号"
-          width="120"
-        >
+        <el-table-column prop="orderId" show-overflow-tooltip label="订单id">
         </el-table-column>
-        <el-table-column
-          prop="orderId"
-          show-overflow-tooltip
-          label="订单id"
-          width="80"
-        >
+        <el-table-column prop="deviceid" show-overflow-tooltip label="设备id">
         </el-table-column>
-        <el-table-column
-          prop="deviceid"
-          show-overflow-tooltip
-          label="设备id"
-          width="180"
-        >
+        <el-table-column prop="addr1" show-overflow-tooltip label="秘钥A">
         </el-table-column>
-        <el-table-column
-          prop="addr1"
-          show-overflow-tooltip
-          label="秘钥A"
-          width="150"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="addr2"
-          show-overflow-tooltip
-          label="秘钥B"
-          width="150"
-        >
+        <el-table-column prop="addr2" show-overflow-tooltip label="秘钥B">
         </el-table-column>
         <el-table-column
           prop="createtime"
           show-overflow-tooltip
           label="创建时间"
-          width="160"
         >
         </el-table-column>
         <!-- prop="testResult" -->
@@ -118,7 +96,6 @@
           prop="testDatetime"
           show-overflow-tooltip
           label="测试时间"
-          width="160"
         >
         </el-table-column>
         <el-table-column
@@ -178,6 +155,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </div>
     <div>
       <div class="fonter">
@@ -338,10 +316,12 @@ export default {
             this.total = data.total;
             this.currentpage = data.current;
             this.pagesize = data.size;
+
+            this.num();
+
             this.$nextTick(() => {
               this.$refs.filterTable.bodyWrapper.scrollTop = 0;
             });
-            this.num();
           } else {
             this.$message({
               message: res.data.msg,
@@ -365,7 +345,7 @@ export default {
         .then((res) => {
           const { code, data } = res.data;
           if (code == 200) {
-             if (count == 0) {
+            if (count == 0) {
               this.num0 = data.total;
             } else if (count == 1) {
               this.num1 = data.total;
@@ -389,6 +369,11 @@ export default {
     onSubmit() {
       this.page(1);
     },
+    resetForm() {
+      this.page(1);
+      this.$refs.formInline.resetFields();
+    },
+
     btntime() {
       if (this.formInline.valuetime) {
         this.page(1);
@@ -402,12 +387,12 @@ export default {
       console.log(filters.tag[0]);
       // this.page(1,filters.tag[0])
     },
-    num(){
+    num() {
       this.numCount(1, 0);
       this.numCount(1, 1);
       this.numCount(1, 2);
       this.numCount(1, 3);
-    }
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
@@ -428,6 +413,13 @@ export default {
 //@import url(); 引入公共css类
 .top {
   display: flex;
+  align-items: center;
+  margin: 0 0 10px 0;
+  background: #fff;
+
+  >>> .el-form-item {
+    margin-bottom: 0;
+  }
 }
 .fonter {
   text-align: center;
@@ -435,8 +427,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #fff;
   .fchild {
     padding: 0 10px 0 10px;
   }
+}
+.demo-form-inline {
+  padding: 24px;
+}
+.tablebox{
+  padding-left: 24px;
+   background: #fff;
 }
 </style>

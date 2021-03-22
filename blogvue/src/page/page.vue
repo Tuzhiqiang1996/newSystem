@@ -1,8 +1,8 @@
 <!--  -->
 <template>
   <div>
-    <div v-if="defaultactive == '1'"><DevlogList/></div>
-    <div v-else-if="defaultactive == '2'"><DevList/></div>
+    <div  v-if="defaultactive == '1'"><DevlogList/></div>
+    <div style="width:100%" class="dd" v-else-if="defaultactive == '2'"><DevList/></div>
     <div v-else-if="defaultactive == '3'"><SystemList/></div>
     <div v-else-if="defaultactive == '4'"><OrderList /></div>
     <div v-else-if="defaultactive == '5'"><UseList /></div>

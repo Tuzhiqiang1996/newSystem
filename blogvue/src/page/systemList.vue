@@ -1,61 +1,71 @@
 <!--  -->
 <template>
   <div class="">
-    <div style="margin: 0 auto; display: table">
-      <div>
-        <el-button @click="handleClick()" type="text" style="float: right"
-          >新增</el-button
-        >
+    <div>
+      <div class="add">
+        <el-button @click="handleClick"  style="    margin: 0 0 0 24px;" >新增</el-button>
       </div>
-      <el-table
-        ref="filterTable"
-        :data="tableData"
-        style="width: 100%"
-        height="506"
-        stripe
-        border
-        v-loading="loading"
-      >
-        <!-- <el-table-column prop="id" label="id" width="100"> </el-table-column> -->
-        <el-table-column prop="acttimer" show-overflow-tooltip fixed label="acttimer" width="80">
-        </el-table-column>
-        <el-table-column prop="cmd"  show-overflow-tooltip label="cmd" width="180"> </el-table-column>
-        <el-table-column prop="display" show-overflow-tooltip label="display" width="180">
-        </el-table-column>
-        <el-table-column prop="end" show-overflow-tooltip label="end" width="180"> </el-table-column>
-        <el-table-column prop="failed" show-overflow-tooltip label="failed" width="180">
-        </el-table-column>
-        <el-table-column prop="filter" show-overflow-tooltip label="filter" width="180">
-        </el-table-column>
-        <el-table-column prop="flag" show-overflow-tooltip label="flag" width="180">
-        </el-table-column>
-        <el-table-column prop="function" show-overflow-tooltip label="function" width="180">
-        </el-table-column>
-        <el-table-column prop="pass" show-overflow-tooltip label="pass" width="80"> </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="120"
-          class-name="operation"
+      <div class="tablebox">
+        <el-table
+          ref="filterTable"
+          :data="tableData"
+          style="width: 100%"
+          height="506"
+          v-loading="loading"
         >
-          <template slot-scope="scope">
-            <el-button type="text" size="small" @click="editClick(scope.row)"
-              >编辑</el-button
-            >
-            <el-popconfirm
-              title="这是一段内容确定删除吗？"
-              @confirm="deleteClick(scope.row)"
-            >
-              <el-button type="text" size="small" slot="reference"
-                >删除
-              </el-button>
-            </el-popconfirm>
-          </template>
-        </el-table-column>
-      </el-table>
+          <!-- <el-table-column prop="id" label="id" width="100"> </el-table-column> -->
+          <el-table-column
+            prop="acttimer"
+            show-overflow-tooltip
+            fixed
+            label="acttimer"
+          >
+          </el-table-column>
+          <el-table-column prop="cmd" show-overflow-tooltip label="cmd">
+          </el-table-column>
+          <el-table-column prop="display" show-overflow-tooltip label="display">
+          </el-table-column>
+          <el-table-column prop="end" show-overflow-tooltip label="end">
+          </el-table-column>
+          <el-table-column prop="failed" show-overflow-tooltip label="failed">
+          </el-table-column>
+          <el-table-column prop="filter" show-overflow-tooltip label="filter">
+          </el-table-column>
+          <el-table-column prop="flag" show-overflow-tooltip label="flag">
+          </el-table-column>
+          <el-table-column
+            prop="function"
+            show-overflow-tooltip
+            label="function"
+          >
+          </el-table-column>
+          <el-table-column prop="pass" show-overflow-tooltip label="pass">
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            width="120"
+            class-name="operation"
+          >
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="editClick(scope.row)"
+                >编辑</el-button
+              >
+              <el-popconfirm
+                title="这是一段内容确定删除吗？"
+                @confirm="deleteClick(scope.row)"
+              >
+                <el-button type="text" size="small" slot="reference"
+                  >删除
+                </el-button>
+              </el-popconfirm>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
     <div>
-      <div style="text-align: center; padding: 20px 0">
+      <div class="fonter">
         <el-pagination
           layout="prev, pager, next"
           :total="total"
@@ -163,7 +173,6 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="onSave">确 定</el-button>
-
       </div>
     </el-dialog>
   </div>
@@ -176,7 +185,7 @@ import { mapState } from "vuex";
 export default {
   name: "systemList",
   //import引入的组件需要注入到对象中才能使用
-  components: {  },
+  components: {},
   props: [],
   data() {
     //这里存放数据
@@ -241,7 +250,7 @@ export default {
     handleClick() {
       this.selectid = 1;
       this.dialogFormVisible = true;
-      this.formData={}
+      this.formData = {};
     },
     //编辑 2
     editClick(row) {
@@ -381,4 +390,23 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+.fonter {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+.tablebox {
+  padding-left: 24px;
+  background: #fff;
+}
+.add {
+  background: #fff;
+  display: flex;
+    width: 100%;
+    height: 70px;
+    align-items: center;
+}
 </style>

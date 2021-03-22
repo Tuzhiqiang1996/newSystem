@@ -1,19 +1,18 @@
 <!--  -->
 <template>
   <div class="">
-    <div style="margin: 0 auto; display: table">
-      <div>
-        <el-button @click="handleClick()" type="text" style="float: right"
+    <div  >
+      <div class="add">
+        <el-button @click="handleClick()" style=" margin: 0 0 0 24px;"
           >新增</el-button
         >
       </div>
+      <div class="tablebox">
       <el-table
         ref="filterTable"
         style="width: 100%"
         :data="tableData"
         height="506"
-        stripe
-        border
         v-loading="loading"
       >
         <!-- <el-table-column prop="id" label="Id" width="80"> </el-table-column> -->
@@ -22,7 +21,6 @@
           show-overflow-tooltip
           fixed
           label="订单号"
-          width="180"
         >
         </el-table-column>
         <el-table-column
@@ -36,69 +34,59 @@
           prop="productName"
           show-overflow-tooltip
           label="产品名称"
-          width="180"
         >
         </el-table-column>
         <el-table-column
           prop="swVersion"
           show-overflow-tooltip
           label="软件版本号"
-          width="180"
         >
         </el-table-column>
         <el-table-column
           prop="hwVersion"
           show-overflow-tooltip
           label="硬件版本号"
-          width="120"
         >
         </el-table-column>
         <el-table-column
           prop="userSwVersion"
           show-overflow-tooltip
           label="APP版本"
-          width="80"
         >
         </el-table-column>
         <el-table-column
           prop="orderQuantity"
           show-overflow-tooltip
           label="数量"
-          width="80"
         >
         </el-table-column>
         <el-table-column
           prop="cloudPlatform"
           show-overflow-tooltip
           label="云端"
-          width="80"
         >
         </el-table-column>
         <el-table-column
           prop="info"
           show-overflow-tooltip
           label="信息"
-          width="120"
         >
         </el-table-column>
         <el-table-column
           prop="bak"
           show-overflow-tooltip
           label="文件"
-          width="180"
         >
         </el-table-column>
         <el-table-column
           prop="atTable"
           show-overflow-tooltip
           label="表"
-          width="120"
         >
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
-          width="120"
           class-name="operation"
         >
           <template slot-scope="scope">
@@ -117,8 +105,9 @@
         >
       </el-table>
     </div>
+    </div>
     <div>
-      <div style="text-align: center; padding: 20px 0">
+      <div class="fonter">
         <el-pagination
           layout="prev, pager, next"
           :total="total"
@@ -466,4 +455,24 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+.tablebox {
+  padding-left: 24px;
+  background: #fff;
+}
+.add {
+  background: #fff;
+  display: flex;
+    width: 100%;
+    height: 70px;
+    align-items: center;
+}
+.fonter {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+
+}
 </style>

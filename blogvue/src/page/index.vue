@@ -84,8 +84,8 @@
           </div>
         </el-header>
         <el-main>
-          <div>
-            <Pagehome :defaultactive="defaultactive" />
+          <div style="width:100%">
+            <Pagehome  :defaultactive="defaultactive" />
           </div>
         </el-main>
         <!-- <el-footer>Footer</el-footer> -->

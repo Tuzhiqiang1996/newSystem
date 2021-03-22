@@ -1,8 +1,9 @@
 <!--  -->
 <template>
   <div class="" >
-    <div style="margin: 0 auto; display: table" v-loading="loading">
+    <div   class="tablebox">
       <el-table
+      v-loading="loading"
         ref="filterTable"
         :data="tableData"
         style="width: 100%;text-angle"
@@ -19,11 +20,11 @@
             <el-tag size="medium">{{ scope.row.username }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="200">
+        <el-table-column prop="email" label="邮箱"  >
         </el-table-column>
-        <el-table-column prop="created" label="日期" width="200">
+        <el-table-column prop="created" label="日期"  >
         </el-table-column>
-        <el-table-column prop="status" label="权限" width="180">
+        <el-table-column prop="status" label="权限"  >
           <template slot-scope="scope">
             <el-rate
               v-model="scope.row.status"
@@ -50,7 +51,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div style="text-align: center; padding: 20px 0">
+    <div class="fonter">
       <el-pagination
         layout="prev, pager, next"
         :total="total"
@@ -191,4 +192,18 @@ export default {
   width: 80px;
   border-radius: 50%;
 }
+.fonter {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+
+}
+.tablebox{
+  padding-left: 24px;
+   background: #fff;
+}
+
 </style>
