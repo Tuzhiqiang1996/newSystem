@@ -3,7 +3,7 @@
   <div class="box">
     <!-- <router-link to="/HelloWorld">数据大屏</router-link> -->
     <el-container style="height: 100%">
-      <el-aside width="" style="background: #00152a">
+      <el-aside width="" style="background: #00152a;">
         <div class="title">MU</div>
         <el-menu
           :default-active="defaultactive"
@@ -224,7 +224,8 @@ export default {
   color: #333;
   text-align: center;
   line-height: 200px;
-  min-width: 65px;
+  // min-width: 65px;
+
 }
 
 .el-main {
