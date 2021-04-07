@@ -15,10 +15,10 @@
           text-color="#fff"
           @select="select"
         >
-          <!-- <el-submenu index="1">
+          <!-- <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">表格1</span>
+              <i class="el-icon-s-grid"></i>
+              <span slot="title">设备列表</span>
             </template>
             <el-menu-item-group>
               <span slot="title">分组一</span>
@@ -37,11 +37,23 @@
             <i class="el-icon-menu"></i>
             <span slot="title">设备日志</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <!-- <el-menu-item index="2">
             <i class="el-icon-s-grid"></i>
             <span slot="title">设备列表</span>
-          </el-menu-item>
-          <el-menu-item index="3">
+          </el-menu-item> -->
+            <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-s-grid"></i>
+              <span slot="title">设备列表</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="2-1">小匠</el-menu-item>
+              <el-menu-item index="2-2">酷宅</el-menu-item>
+              <el-menu-item index="2-3">大华</el-menu-item>
+              <el-menu-item index="2-4">涂鸦</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-menu-item index="3"  style="display:none">
             <i class="el-icon-tickets"></i>
             <span slot="title">设备信息</span>
           </el-menu-item>
@@ -111,7 +123,7 @@ export default {
       isCollapse: false,
       isbtn1: "el-icon-s-fold",
       isbtn2: "el-icon-s-unfold",
-      defaultactive: "2",
+      defaultactive: "2-1",
       message: "Hello",
       list: [{ mas: "v-for\n" }, { mas: 2 }, { mas: 3 }],
     };
@@ -227,6 +239,10 @@ export default {
   // min-width: 65px;
 
 }
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
 
 .el-main {
   background-color: #e9eef3;

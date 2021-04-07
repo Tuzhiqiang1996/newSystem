@@ -97,7 +97,7 @@
               title="这是一段内容确定删除吗？"
               @confirm="deleteClick(scope.row)"
             >
-              <el-button type="text" size="small" slot="reference"
+              <el-button  style="display:none" type="text" size="small" slot="reference"
                 >删除
               </el-button>
             </el-popconfirm>

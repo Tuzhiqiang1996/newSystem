@@ -41,6 +41,7 @@
             <el-button type="primary" @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
+        <el-tag type="info">默认显示最近24小时</el-tag>
       </div>
       <div class="tablebox">
 
@@ -108,17 +109,17 @@
           <template slot-scope="scope">
             <el-tag
               :type="
-                scope.row.testResult == 1
+                scope.row.checkResult == 1
                   ? 'success'
-                  : scope.row.testResult == 0
+                  : scope.row.checkResult == 0
                   ? 'info'
                   : 'danger'
               "
               disable-transitions
               >{{
-                scope.row.testResult == 1
+                scope.row.checkResult == 1
                   ? "成功"
-                  : scope.row.testResult == 0
+                  : scope.row.checkResult == 0
                   ? "未测试"
                   : "失败"
               }}</el-tag

@@ -108,10 +108,13 @@ public class DeviceListController {
         if (orderId != null && orderId.length() != 0) {
             queryWrapper.eq("order_id", orderId);
         }
+        Integer d = 3;
         if (num != null ) {
-            queryWrapper.eq("check_count", num);
-            if (num >= 3) {
+            if (num >= d) {
                 queryWrapper.ge("check_count", num);
+            }else{
+
+            queryWrapper.eq("check_count", num);
             }
         }
 

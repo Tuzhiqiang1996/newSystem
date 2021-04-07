@@ -1,9 +1,12 @@
 <!--  -->
 <template>
   <div>
-    <div  v-if="defaultactive == '1'"><DevlogList/></div>
-    <div style="width:100%" class="dd" v-else-if="defaultactive == '2'"><DevList/></div>
-    <div v-else-if="defaultactive == '3'"><SystemList/></div>
+    <div v-if="defaultactive == '1'"><DevlogList /></div>
+    <div v-else-if="defaultactive == '2-1'"><XiaoJlist /></div><!--小匠-->
+    <div v-else-if="defaultactive == '2-2'"><DevList /></div><!--酷宅-->
+    <div v-else-if="defaultactive == '2-3'"><DevList /></div><!--大华-->
+    <div v-else-if="defaultactive == '2-4'"><TyList /></div><!--涂鸦-->
+    <div v-else-if="defaultactive == '3'"><SystemList /></div>
     <div v-else-if="defaultactive == '4'"><OrderList /></div>
     <div v-else-if="defaultactive == '5'"><UseList /></div>
   </div>
@@ -17,6 +20,8 @@ import OrderList from "./orderList";
 import SystemList from "./systemList";
 import DevList from "./devList";
 import DevlogList from "./devlogList";
+import XiaoJlist from "./XiaoJlist";
+import TyList from "./TyList";
 export default {
   name: "page",
   //import引入的组件需要注入到对象中才能使用
@@ -31,7 +36,7 @@ export default {
    * 3
    * 4
    */
-  components: { UseList, OrderList,SystemList,DevList, DevlogList,  },
+  components: { UseList, OrderList, SystemList, DevList, DevlogList,XiaoJlist ,TyList},
   data() {
     //这里存放数据
     return {};
