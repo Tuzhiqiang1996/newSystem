@@ -2,10 +2,18 @@
 <template>
   <div>
     <div v-if="defaultactive == '1'"><DevlogList /></div>
-    <div v-else-if="defaultactive == '2-1'"><XiaoJlist /></div><!--小匠-->
-    <div v-else-if="defaultactive == '2-2'"><DevList /></div><!--酷宅-->
-    <div v-else-if="defaultactive == '2-3'"><DevList /></div><!--大华-->
-    <div v-else-if="defaultactive == '2-4'"><TyList /></div><!--涂鸦-->
+    <!-- <div v-else-if="defaultactive == '2-1'"><Syslist :listid="listid" /></div> -->
+    <!--小匠 X-->
+    <!-- <div v-else-if="defaultactive == '2-2'"><Syslist :listid="listid" /></div> -->
+    <!--酷宅 K-->
+    <!-- <div v-else-if="defaultactive == '2-3'"><Syslist :listid="listid" /></div> -->
+    <!--大华 D-->
+    <!-- <div v-else-if="defaultactive == '2-4'"><Syslist :listid="listid" /></div> -->
+    <!--涂鸦 T-->
+    <div v-else-if="defaultactive == '2-1'"><XiaoJlist  /></div>
+    <div v-else-if="defaultactive == '2-2'"><DevList  /></div>
+    <div v-else-if="defaultactive == '2-3'"><Syslist listid="D"/></div>
+    <div v-else-if="defaultactive == '2-4'"><TyList  /></div>
     <div v-else-if="defaultactive == '3'"><SystemList /></div>
     <div v-else-if="defaultactive == '4'"><OrderList /></div>
     <div v-else-if="defaultactive == '5'"><UseList /></div>
@@ -22,29 +30,32 @@ import DevList from "./devList";
 import DevlogList from "./devlogList";
 import XiaoJlist from "./XiaoJlist";
 import TyList from "./TyList";
+import Syslist from "../components/syslist";
 export default {
   name: "page",
   //import引入的组件需要注入到对象中才能使用
   //子组件接收来自父组件的值
   props: ["defaultactive"],
-  /**
-   * 1-1
-   * 1-2
-   * 1-3
-   * 1-4-1
-   * 2
-   * 3
-   * 4
-   */
-  components: { UseList, OrderList, SystemList, DevList, DevlogList,XiaoJlist ,TyList},
+  components: {
+    UseList,
+    OrderList,
+    SystemList,
+    DevList,
+    DevlogList,
+    XiaoJlist,
+    TyList,
+    Syslist,
+  },
   data() {
     //这里存放数据
-    return {};
+    return {
+    };
   },
   //监听属性 类似于data概念
   computed: {},
   //监控data中的数据变化
-  watch: {},
+  watch: {
+  },
   //方法集合
   methods: {},
   //生命周期 - 创建完成（可以访问当前this实例）

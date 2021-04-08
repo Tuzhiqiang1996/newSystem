@@ -41,121 +41,115 @@
             <el-button type="primary" @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
-        <el-tag type="info">默认显示最近24小时</el-tag>
+        <!-- <el-tag type="info">默认显示最近24小时</el-tag> -->
       </div>
       <div class="tablebox">
+        <el-table
+          ref="filterTable"
+          style="width: 100%"
+          :data="tableData"
+          height="629"
+          v-loading="loading"
+          @filter-change="handleFilterChange"
+        >
+          <el-table-column prop="sn" show-overflow-tooltip label="序列号">
+          </el-table-column>
+          <el-table-column prop="id" label="Id" width="80"> </el-table-column>
+          <el-table-column prop="orderId" show-overflow-tooltip label="订单id">
+          </el-table-column>
+          <el-table-column prop="deviceid" show-overflow-tooltip label="设备id">
+          </el-table-column>
+          <el-table-column prop="addr1" show-overflow-tooltip label="秘钥A">
+          </el-table-column>
+          <el-table-column prop="addr2" show-overflow-tooltip label="秘钥B">
+          </el-table-column>
+          <el-table-column
+            prop="createtime"
+            show-overflow-tooltip
+            label="创建时间"
+          >
+          </el-table-column>
+          <!-- prop="testResult" -->
+          <el-table-column label="测试结果" width="80" fixed="right">
+            <template slot-scope="scope">
+              <el-tag
+                :type="
+                  scope.row.testResult == 1
+                    ? 'success'
+                    : scope.row.testResult == 0
+                    ? 'info'
+                    : scope.row.testResult == -1
+                    ? 'danger'
+                    : 'warning'
+                "
+                disable-transitions
+                >{{
+                  scope.row.testResult == 1
+                    ? "成功"
+                    : scope.row.testResult == 0
+                    ? "未测试"
+                    : scope.row.testResult == -1
+                    ? "失败"
+                    : "NULL"
+                }}</el-tag
+              >
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="testDatetime"
+            show-overflow-tooltip
+            label="测试时间"
+          >
+          </el-table-column>
+          {{this.listid=="X" ||this.listid=="T"||this.listid=="D"?
+          <PackageDatetime />
+          :
+          <checkResult />
+          }}
 
-      <el-table
-        ref="filterTable"
-        style="width: 100%"
-        :data="tableData"
-        height="629"
+          <el-table-column
+            prop="checkDatetime"
+            show-overflow-tooltip
+            label="检查时间"
+            width="160"
+          >
+          </el-table-column>
+          {{this.listid=="X" ||this.listid=="T"||this.listid=="D"?
 
-        v-loading="loading"
-        @filter-change="handleFilterChange"
-      >
-        <el-table-column prop="sn" show-overflow-tooltip      label="序列号">
-        </el-table-column>
-        <el-table-column prop="id" label="Id" width="80"> </el-table-column>
-        <el-table-column prop="orderId" show-overflow-tooltip label="订单id">
-        </el-table-column>
-        <el-table-column prop="deviceid" show-overflow-tooltip label="设备id">
-        </el-table-column>
-        <el-table-column prop="addr1" show-overflow-tooltip label="秘钥A">
-        </el-table-column>
-        <el-table-column prop="addr2" show-overflow-tooltip label="秘钥B">
-        </el-table-column>
-        <el-table-column
-          prop="createtime"
-          show-overflow-tooltip
-          label="创建时间"
-        >
-        </el-table-column>
-        <!-- prop="testResult" -->
-        <el-table-column label="测试结果" width="80" fixed="right">
-          <template slot-scope="scope">
-            <el-tag
-              :type="
-                scope.row.testResult == 1
-                  ? 'success'
-                  : scope.row.testResult == 0
-                  ? 'info'
-                  : 'danger'
-              "
-              disable-transitions
-              >{{
-                scope.row.testResult == 1
-                  ? "成功"
-                  : scope.row.testResult == 0
-                  ? "未测试"
-                  : "失败"
-              }}</el-tag
-            >
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="testDatetime"
-          show-overflow-tooltip
-          label="测试时间"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="checkResult"
-          show-overflow-tooltip
-          label="检查结果"
-          width="80"
-          fixed="right"
-        >
-          <template slot-scope="scope">
-            <el-tag
-              :type="
-                scope.row.checkResult == 1
-                  ? 'success'
-                  : scope.row.checkResult == 0
-                  ? 'info'
-                  : 'danger'
-              "
-              disable-transitions
-              >{{
-                scope.row.checkResult == 1
-                  ? "成功"
-                  : scope.row.checkResult == 0
-                  ? "未测试"
-                  : "失败"
-              }}</el-tag
-            >
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="checkDatetime"
-          show-overflow-tooltip
-          label="检查时间"
-          width="160"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="checkCount"
-          show-overflow-tooltip
-          label="检查次数"
-          width="90"
-          column-key="tag"
-          :filters="[
-            { text: '0', value: '0' },
-            { text: '1', value: '1' },
-            { text: '2', value: '2' },
-            { text: '3', value: '3' },
-            { text: '4', value: '4' },
-            { text: '5', value: '5' },
-          ]"
-          :filter-method="filterTag"
-          :filter-multiple="false"
-          filter-placement="bottom-end"
-        >
-          <template slot-scope="scope">
-            {{ scope.row.checkCount }}
-          </template>
-        </el-table-column>
-      </el-table>
+          <el-table-column
+            prop="packageDatetime"
+            show-overflow-tooltip
+            label="包装时间"
+            width="160"
+          >
+          </el-table-column>
+          :
+          <div style="display: none"></div>
+          }}
+
+          <el-table-column
+            prop="checkCount"
+            show-overflow-tooltip
+            label="检查次数"
+            width="90"
+            column-key="tag"
+            :filters="[
+              { text: '0', value: '0' },
+              { text: '1', value: '1' },
+              { text: '2', value: '2' },
+              { text: '3', value: '3' },
+              { text: '4', value: '4' },
+              { text: '5', value: '5' },
+            ]"
+            :filter-method="filterTag"
+            :filter-multiple="false"
+            filter-placement="bottom-end"
+          >
+            <template slot-scope="scope">
+              {{ scope.row.checkCount }}
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
     <div>
@@ -190,11 +184,13 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
+import PackageDatetime from "./PackageDatetime";
+import checkResult from "./checkResult";
 export default {
   name: "devList",
   //import引入的组件需要注入到对象中才能使用
-  components: {},
-  props: [],
+  components: { PackageDatetime, checkResult },
+  props: ["listid"],
   data() {
     //这里存放数据
     return {
@@ -209,20 +205,7 @@ export default {
       pagesize: 5, //每页显示条目个数
       data: {}, //数据
       loading: true,
-      formData: {
-        id: "",
-        sn: "",
-        orderId: "",
-        deviceid: "",
-        addr1: "",
-        addr2: "",
-        createtime: "",
-        testResult: "",
-        testDatetime: "",
-        checkResult: "",
-        checkDatetime: "",
-        checkCount: "",
-      },
+      formData: {},
       formInline: {
         deviceid: "",
         orderId: "",
@@ -277,6 +260,9 @@ export default {
           },
         ],
       },
+      url1: "devList",
+      url2: "searchlist",
+      url3: "statistical",
     };
   },
   //监听属性 类似于data概念
@@ -288,8 +274,8 @@ export default {
     page(num) {
       let time1 = this.formInline.valuetime && this.formInline.valuetime[0];
       let time2 = this.formInline.valuetime && this.formInline.valuetime[1];
-      let url = `/devList?currentPage=${num}`;
-      let url1 = `/searchlist?deviceid=${
+      let url = `/${this.url1}?currentPage=${num}`;
+      let url1 = `/${this.url2}?deviceid=${
         this.formInline.deviceid
       }&currentPage=${num}&orderId=${this.formInline.orderId}&starttime=${
         time1 || ""
@@ -307,7 +293,6 @@ export default {
         .then((res) => {
           const { code, data } = res.data;
           if (code == 200) {
-            console.log(data);
             this.loading = false;
             this.tableData = data.records;
             this.total = data.total;
@@ -334,7 +319,7 @@ export default {
     numCount(num, count) {
       let time1 = this.formInline.valuetime && this.formInline.valuetime[0];
       let time2 = this.formInline.valuetime && this.formInline.valuetime[1];
-      let url = `/statistical?currentPage=${num}&starttime=${
+      let url = `/${this.url3}?currentPage=${num}&starttime=${
         time1 || ""
       }&endtime=${time2 || ""}&num=${count}&orderId=${this.formInline.orderId}`;
       this.$axios
@@ -394,6 +379,73 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     this.page(1);
+    console.log("ds", this.listid);
+    // console.log('d',sessionStorage.getItem("active"));
+
+    /**
+     *
+     */
+    //酷宅
+    let datak = {
+      id: "",
+      sn: "",
+      orderId: "",
+      deviceid: "",
+      addr1: "",
+      addr2: "",
+      createtime: "",
+      testResult: "",
+      testDatetime: "",
+      checkResult: "",
+      checkDatetime: "",
+      checkCount: "",
+    };
+    //小匠 涂鸦 大华？
+    let dataxt = {
+      Id: "",
+      sn: "",
+      orderId: "",
+      deviceid: "",
+      addr1: "",
+      addr2: "",
+      createtime: "",
+      testResult: "",
+      testDatetime: "",
+      packageDatetime: "",
+      packages: "",
+      checkDatetime: "",
+      checkCount: "",
+    };
+
+    switch (this.listid) {
+      case "K":
+        this.formData = datak;
+        this.url1 = "devList";
+        this.url2 = "searchlist";
+        this.url3 = "statistical";
+        break;
+      case "X":
+        this.formData = dataxt;
+        this.url1 = "xiaojlist";
+        this.url2 = "searchXjlist";
+        this.url3 = "xjtatistical";
+        break;
+      case "D":
+        this.formData = dataxt;
+        this.url1 = "xiaojlist";
+        this.url2 = "searchXjlist";
+        this.url3 = "xjtatistical";
+        break;
+      case "T":
+        this.formData = dataxt;
+        this.url1 = "TYlist";
+        this.url2 = "searchTYlist";
+        this.url3 = "tytatistical";
+        break;
+
+      default:
+        break;
+    }
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
@@ -432,8 +484,8 @@ export default {
 .demo-form-inline {
   padding: 24px;
 }
-.tablebox{
+.tablebox {
   padding-left: 24px;
-   background: #fff;
+  background: #fff;
 }
 </style>

@@ -25,7 +25,6 @@ public class TuYListController {
     TuYListService tuYListService;
 
     @GetMapping("/TYlist")
-
     public Result xiaojlist(Integer currentPage) {
         if (currentPage == null || currentPage < 1) {
             currentPage = 1;
@@ -83,6 +82,9 @@ public class TuYListController {
             } else {
                 queryWrapper.eq("check_count", num);
             }
+        }
+        if (starttime != null && starttime.length() != 0) {
+            queryWrapper.between("test_datetime", starttime, endtime);
         }
 
 //        if(starttime != null && starttime.length() != 0) {

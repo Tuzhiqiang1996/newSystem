@@ -125,7 +125,6 @@ export default {
       isbtn2: "el-icon-s-unfold",
       defaultactive: "2-1",
       message: "Hello",
-      list: [{ mas: "v-for\n" }, { mas: 2 }, { mas: 3 }],
     };
   },
   //监听属性 类似于data概念
@@ -154,6 +153,8 @@ export default {
     select(key, keyPath) {
       console.log(key, keyPath);
       this.defaultactive = key;
+      // sessionStorage.setItem("active",key)
+
     },
     errorHandler() {
       return true;
