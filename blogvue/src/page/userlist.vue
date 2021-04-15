@@ -1,12 +1,12 @@
 <!--  -->
 <template>
-  <div class="" >
-    <div   class="tablebox">
+  <div class="">
+    <div class="tablebox">
       <el-table
-      v-loading="loading"
+        v-loading="loading"
         ref="filterTable"
         :data="tableData"
-        style="width: 100%;text-angle"
+        style="width: 100%"
       >
         <el-table-column label="头像" width="100">
           <template slot-scope="scope">
@@ -20,11 +20,9 @@
             <el-tag size="medium">{{ scope.row.username }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱"  >
-        </el-table-column>
-        <el-table-column prop="created" label="日期"  >
-        </el-table-column>
-        <el-table-column prop="status" label="权限"  >
+        <el-table-column prop="email" label="邮箱"> </el-table-column>
+        <el-table-column prop="created" label="日期"> </el-table-column>
+        <el-table-column prop="status" label="权限">
           <template slot-scope="scope">
             <el-rate
               v-model="scope.row.status"
@@ -72,7 +70,7 @@ import { mapState } from "vuex";
 export default {
   name: "userlist",
   //import引入的组件需要注入到对象中才能使用
-  components: {  },
+  components: {},
   data() {
     //这里存放数据
     return {
@@ -104,8 +102,7 @@ export default {
             this.total = res.data.data.total;
             this.currentpage = res.data.data.current;
             this.pagesize = res.data.data.size;
-          } else{
-
+          } else {
             this.$message({
               message: res.data.msg,
               showClose: true,
@@ -127,46 +124,44 @@ export default {
       console.log(index, row);
     },
     handleDelete(index, row) {
-
       this.$confirm("此操作将永久删除该用户？, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
         if (row.status !== 0) {
-        this.$axios
-          .get(`/deleteUser?id=${row.id}&status=${this.userInfo.status}`)
-          .then((res) => {
-            if (res.data.code == 200) {
+          this.$axios
+            .get(`/deleteUser?id=${row.id}&status=${this.userInfo.status}`)
+            .then((res) => {
+              if (res.data.code == 200) {
+                this.$message({
+                  message: res.data.msg,
+                  showClose: true,
+                  type: "success",
+                });
+                this.pages(1);
+              } else {
+                this.$message({
+                  message: res.data.msg,
+                  showClose: true,
+                  type: "error",
+                });
+              }
+            })
+            .catch((err) => {
               this.$message({
-                message: res.data.msg,
-                showClose: true,
-                type: "success",
-              });
-              this.pages(1);
-            } else {
-              this.$message({
-                message: res.data.msg,
+                message: err,
                 showClose: true,
                 type: "error",
               });
-            }
-          })
-          .catch((err) => {
-            this.$message({
-              message: err,
-              showClose: true,
-              type: "error",
             });
+        } else {
+          this.$message({
+            message: "该账号不可删除",
+            showClose: true,
+            type: "error",
           });
-          }else{
-             this.$message({
-              message: '该账号不可删除',
-              showClose: true,
-              type: "error",
-            });
-          }
-
+        }
       });
       // console.log(row.id, row.status);
     },
@@ -199,11 +194,9 @@ export default {
   justify-content: center;
   align-items: center;
   background: #fff;
-
 }
-.tablebox{
+.tablebox {
   padding-left: 24px;
-   background: #fff;
+  background: #fff;
 }
-
 </style>
