@@ -9,6 +9,9 @@
           ref="formInline"
           class="demo-form-inline"
         >
+          <el-form-item label="sn序列号" prop="sn">
+            <el-input v-model="formInline.sn" placeholder="sn序列号"></el-input>
+          </el-form-item>
           <el-form-item label="订单id" prop="orderId">
             <el-input
               v-model="formInline.orderId"
@@ -50,8 +53,8 @@
           :data="tableData"
           height="629"
           v-loading="loading"
-
           @filter-change="handleFilterChange"
+          @row-click="showdialog"
         >
           <el-table-column prop="sn" show-overflow-tooltip label="序列号">
           </el-table-column>
@@ -78,16 +81,20 @@
                   scope.row.testResult == 1
                     ? 'success'
                     : scope.row.testResult == 0
-                    ? 'info':scope.row.testResult == -1?
-                     'danger':'warning'
+                    ? 'info'
+                    : scope.row.testResult == -1
+                    ? 'danger'
+                    : 'warning'
                 "
                 disable-transitions
                 >{{
                   scope.row.testResult == 1
                     ? "成功"
                     : scope.row.testResult == 0
-                    ? "未测试": scope.row.testResult == -1?
-                    "失败":"NULL"
+                    ? "未测试"
+                    : scope.row.testResult == -1
+                    ? "失败"
+                    : "NULL"
                 }}</el-tag
               >
             </template>
@@ -111,16 +118,20 @@
                   scope.row.packages == 1
                     ? 'success'
                     : scope.row.packages == 0
-                    ? 'info':scope.row.packages == -1?
-                     'danger':'warning'
+                    ? 'info'
+                    : scope.row.packages == -1
+                    ? 'danger'
+                    : 'warning'
                 "
                 disable-transitions
                 >{{
                   scope.row.packages == 1
                     ? "成功"
                     : scope.row.packages == 0
-                    ? "未测试": scope.row.packages == -1?
-                    "失败":"NULL"
+                    ? "未测试"
+                    : scope.row.packages == -1
+                    ? "失败"
+                    : "NULL"
                 }}</el-tag
               >
             </template>
@@ -190,6 +201,118 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog
+      title="详情"
+      :visible.sync="dialogFormVisible"
+      width="50%"
+      center
+    >
+      <el-form ref="formData" :model="formData" class="formbox">
+        <el-form-item label="ID:" label-width="100px">
+          <span>{{ formData.id }}</span>
+        </el-form-item>
+        <el-form-item label="序列号:" label-width="100px">
+          <span>{{ formData.sn }}</span>
+        </el-form-item>
+        <el-form-item label="订单id:" label-width="100px">
+          <span>{{ formData.orderId }}</span>
+        </el-form-item>
+        <el-form-item label="设备id:" label-width="100px">
+          <el-input
+            v-model="formData.deviceid"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="秘钥A:" label-width="100px">
+          <el-input
+            v-model="formData.addr1"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="秘钥B:" label-width="100px">
+          <el-input
+            v-model="formData.addr2"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="创建时间:" label-width="100px">
+          <el-input
+            v-model="formData.createtime"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="测试结果:" label-width="100px">
+          <el-input
+            v-model="formData.testResult"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="测试时间:" label-width="100px">
+          <el-input
+            v-model="formData.testDatetime"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="包装时间:" label-width="100px">
+          <el-input
+            v-model="formData.packageDatetime"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="检查结果:" label-width="100px">
+          <el-input
+            v-model="formData.packages"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="订单号:" label-width="100px">
+          <el-input
+            v-model="formData.检查时间"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="检查次数:" label-width="100px">
+          <el-input
+            v-model="formData.checkCount"
+            type="text"
+            class="input"
+            autocomplete="off"
+            placeholder="请输入"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onSave">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -204,6 +327,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      dialogFormVisible: false,
       num0: 0,
       num1: 0,
       num2: 0,
@@ -216,7 +340,7 @@ export default {
       data: {}, //数据
       loading: true,
       formData: {
-        Id: "",
+        id: "",
         sn: "",
         orderId: "",
         deviceid: "",
@@ -234,6 +358,7 @@ export default {
         deviceid: "",
         orderId: "",
         valuetime: "",
+        sn: "",
       },
       pickerOptions: {
         shortcuts: [
@@ -304,10 +429,11 @@ export default {
         this.formInline.deviceid
       }&currentPage=${num}&orderId=${this.formInline.orderId}&starttime=${
         time1 || ""
-      }&endtime=${time2 || ""}`;
+      }&endtime=${time2 || ""}&sn=${this.formInline.sn}`;
       let urls =
         (this.formInline.deviceid == "" &&
           this.formInline.orderId == "" &&
+          this.formInline.sn == "" &&
           time1 == "") ||
         time1 == undefined
           ? url
@@ -400,6 +526,52 @@ export default {
       this.numCount(1, 2);
       this.numCount(1, 3);
     },
+    onSave() {
+      let url = "/listFix";
+      this.$axios
+        .post(url, this.formData)
+        .then((res) => {
+          if (res.data.code == 200) {
+            this.dialogFormVisible = false;
+            this.$message({
+              message: res.data.msg,
+              showClose: true,
+              type: "success",
+            });
+          }else{
+              this.$message({
+              message: res.data.msg,
+              showClose: true,
+              type: "error",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+            this.$message({
+              message: err,
+              showClose: true,
+              type: "error",
+            });
+        });
+    },
+    showdialog(e, n, t) {
+      // console.log("dialog", e, n, t);
+      this.dialogFormVisible = true;
+      this.formData.id = e.id;
+      this.formData.sn = e.sn;
+      this.formData.orderId = e.orderId;
+      this.formData.deviceid = e.deviceid;
+      this.formData.addr1 = e.addr1;
+      this.formData.addr2 = e.addr2;
+      this.formData.createtime = e.createtime;
+      this.formData.testResult = e.testResult;
+      this.formData.testDatetime = e.testDatetime;
+      this.formData.packageDatetime = e.packageDatetime;
+      this.formData.packages = e.packages;
+      this.formData.checkDatetime = e.checkDatetime;
+      this.formData.checkCount = e.checkCount;
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
@@ -445,5 +617,13 @@ export default {
 .tablebox {
   padding-left: 24px;
   background: #fff;
+}
+.formbox {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto;
+}
+.input{
+  width: 200px;
 }
 </style>

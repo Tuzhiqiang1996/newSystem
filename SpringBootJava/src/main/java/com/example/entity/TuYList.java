@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @TableName("tb_device_list_re755")
 
-public class TuYList implements Serializable {
+public class    TuYList implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(value = "Id", type = IdType.AUTO)
     private Long Id;

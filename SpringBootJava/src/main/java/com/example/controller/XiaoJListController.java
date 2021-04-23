@@ -9,6 +9,8 @@ import com.example.entity.XiaoJList;
 import com.example.service.XiaoJListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
@@ -39,7 +41,7 @@ public class XiaoJListController {
     }
 
     @GetMapping("/searchXjlist")
-    public Result searchData(String deviceid, Integer currentPage, String orderId, String starttime, String endtime) {
+    public Result searchData(String deviceid, Integer currentPage, String orderId, String starttime, String endtime,String sn) {
 
         if (currentPage == null || currentPage < 1) {
             currentPage = 1;
@@ -52,9 +54,13 @@ public class XiaoJListController {
         if (orderId != null && orderId.length() != 0) {
             queryWrapper.like("order_id", orderId);
         }
+        if (sn != null && sn.length() != 0) {
+            queryWrapper.like("sn", sn);
+        }
         if (starttime != null && starttime.length() != 0) {
             queryWrapper.between("test_datetime", starttime, endtime);
         }
+
         queryWrapper.orderByDesc("test_datetime");//时间降序  orderByDesc降序 orderByAsc升序
 
         List<XiaoJList> deviceLogLists = xiaoJListService.list(queryWrapper);
@@ -101,5 +107,21 @@ public class XiaoJListController {
             return Result.fail("没有数据！");
         }
         return Result.succ("操作成功", devLists);
+    }
+
+    @PostMapping("/listFix")
+    public Result listFix(@RequestBody XiaoJList xiaoJList){
+        XiaoJList xiaoJList1 = xiaoJListService.getById(xiaoJList.getId());
+        xiaoJList1.setDeviceid(xiaoJList.getDeviceid());
+        xiaoJList1.setAddr1(xiaoJList.getAddr1());
+        xiaoJList1.setAddr2(xiaoJList.getAddr2());
+        xiaoJList1.setCreatetime(xiaoJList.getCreatetime());
+        xiaoJList1.setTestResult(xiaoJList.getTestResult());
+        xiaoJList1.setTestDatetime(xiaoJList.getTestDatetime());
+        xiaoJList1.setPackageDatetime(xiaoJList.getPackageDatetime());
+        xiaoJList1.setPackages(xiaoJList.getPackages());
+        xiaoJList1.setCheckDatetime(xiaoJList.getCheckDatetime());
+        xiaoJList1.setCheckCount(xiaoJList.getCheckCount());
+        return Result.succ("修改成功！");
     }
 }

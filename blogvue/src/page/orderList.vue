@@ -1,110 +1,94 @@
 <!--  -->
 <template>
   <div class="">
-    <div  >
+    <div>
       <div class="add">
-        <el-button @click="handleClick()" style=" margin: 0 0 0 24px;"
+        <el-button @click="handleClick()" style="margin: 0 0 0 24px"
           >新增</el-button
         >
       </div>
       <div class="tablebox">
-      <el-table
-        ref="filterTable"
-        style="width: 100%"
-        :data="tableData"
-        height="506"
-        v-loading="loading"
-      >
-        <!-- <el-table-column prop="id" label="Id" width="80"> </el-table-column> -->
-        <el-table-column
-          prop="orderNumber"
-          show-overflow-tooltip
-          fixed
-          label="订单号"
+        <el-table
+          ref="filterTable"
+          style="width: 100%"
+          :data="tableData"
+          height="506"
+          v-loading="loading"
         >
-        </el-table-column>
-        <el-table-column
-          prop="projectName"
-          show-overflow-tooltip
-          label="项目"
-          width="80"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="productName"
-          show-overflow-tooltip
-          label="产品名称"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="swVersion"
-          show-overflow-tooltip
-          label="软件版本号"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="hwVersion"
-          show-overflow-tooltip
-          label="硬件版本号"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="userSwVersion"
-          show-overflow-tooltip
-          label="APP版本"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="orderQuantity"
-          show-overflow-tooltip
-          label="数量"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="cloudPlatform"
-          show-overflow-tooltip
-          label="云端"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="info"
-          show-overflow-tooltip
-          label="信息"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="bak"
-          show-overflow-tooltip
-          label="文件"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="atTable"
-          show-overflow-tooltip
-          label="表"
-        >
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          class-name="operation"
-        >
-          <template slot-scope="scope">
-            <el-button type="text" size="small" @click="editClick(scope.row)"
-              >编辑</el-button
-            >
-            <el-popconfirm
+          <!-- <el-table-column prop="id" label="Id" width="80"> </el-table-column> -->
+          <el-table-column
+            prop="orderNumber"
+            show-overflow-tooltip
+            fixed
+            label="订单号"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="projectName"
+            show-overflow-tooltip
+            label="项目"
+            width="80"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="productName"
+            show-overflow-tooltip
+            label="产品名称"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="swVersion"
+            show-overflow-tooltip
+            label="软件版本号"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="hwVersion"
+            show-overflow-tooltip
+            label="硬件版本号"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="userSwVersion"
+            show-overflow-tooltip
+            label="APP版本"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="orderQuantity"
+            show-overflow-tooltip
+            label="数量"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="cloudPlatform"
+            show-overflow-tooltip
+            label="云端"
+          >
+          </el-table-column>
+          <el-table-column prop="info" show-overflow-tooltip label="信息">
+          </el-table-column>
+          <el-table-column prop="bak" show-overflow-tooltip label="文件">
+          </el-table-column>
+          <el-table-column prop="atTable" show-overflow-tooltip label="表">
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" class-name="operation">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="editClick(scope.row)"
+                >编辑</el-button
+              >
+              <!-- <el-popconfirm
               title="这是一段内容确定删除吗？"
               @confirm="deleteClick(scope.row)"
             >
               <el-button  style="display:none" type="text" size="small" slot="reference"
                 >删除
               </el-button>
-            </el-popconfirm>
-          </template></el-table-column
-        >
-      </el-table>
-    </div>
+            </el-popconfirm> -->
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
     <div>
       <div class="fonter">
@@ -244,7 +228,7 @@ import { mapState } from "vuex";
 export default {
   name: "orderList",
   //import引入的组件需要注入到对象中才能使用
-  components: {  },
+  components: {},
   props: [],
   data() {
     //这里存放数据
@@ -462,9 +446,9 @@ export default {
 .add {
   background: #fff;
   display: flex;
-    width: 100%;
-    height: 70px;
-    align-items: center;
+  width: 100%;
+  height: 70px;
+  align-items: center;
 }
 .fonter {
   text-align: center;
@@ -473,6 +457,5 @@ export default {
   justify-content: center;
   align-items: center;
   background: #fff;
-
 }
 </style>

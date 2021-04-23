@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("tb_device_list_xiaojiang")
+@TableName("tb_device_list_xiaojiang")  //28
 
 public class XiaoJList implements Serializable {
     private static final long serialVersionUID = 1L;

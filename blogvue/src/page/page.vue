@@ -30,7 +30,7 @@ import DevList from "./devList";
 import DevlogList from "./devlogList";
 import XiaoJlist from "./XiaoJlist";
 import TyList from "./TyList";
-import Syslist from "../components/syslist";
+import Syslist from "./dahuaList";
 export default {
   name: "page",
   //import引入的组件需要注入到对象中才能使用
