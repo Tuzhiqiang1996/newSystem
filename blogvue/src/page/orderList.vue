@@ -1,83 +1,81 @@
 <!--  -->
-<template>
-  <div class="">
-    <div>
-      <div class="add">
-        <el-button @click="handleClick()" style="margin: 0 0 0 24px"
-          >新增</el-button
+<template >
+  <div class=" ">
+    <div class="add">
+      <el-button @click="handleClick()" style="margin: 0 0 0 24px"
+        >新增</el-button
+      >
+    </div>
+    <div class="tablebox">
+      <el-table
+        ref="filterTable"
+        style="width: 100%"
+        :data="tableData"
+        height="506"
+        v-loading="loading"
+      >
+        <el-table-column
+          prop="orderNumber"
+          show-overflow-tooltip
+          fixed
+          label="订单号"
         >
-      </div>
-      <div class="tablebox">
-        <el-table
-          ref="filterTable"
-          style="width: 100%"
-          :data="tableData"
-          height="506"
-          v-loading="loading"
+        </el-table-column>
+        <el-table-column
+          prop="projectName"
+          show-overflow-tooltip
+          label="项目"
+          width="80"
         >
-          <!-- <el-table-column prop="id" label="Id" width="80"> </el-table-column> -->
-          <el-table-column
-            prop="orderNumber"
-            show-overflow-tooltip
-            fixed
-            label="订单号"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="projectName"
-            show-overflow-tooltip
-            label="项目"
-            width="80"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="productName"
-            show-overflow-tooltip
-            label="产品名称"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="swVersion"
-            show-overflow-tooltip
-            label="软件版本号"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="hwVersion"
-            show-overflow-tooltip
-            label="硬件版本号"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="userSwVersion"
-            show-overflow-tooltip
-            label="APP版本"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="orderQuantity"
-            show-overflow-tooltip
-            label="数量"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="cloudPlatform"
-            show-overflow-tooltip
-            label="云端"
-          >
-          </el-table-column>
-          <el-table-column prop="info" show-overflow-tooltip label="信息">
-          </el-table-column>
-          <el-table-column prop="bak" show-overflow-tooltip label="文件">
-          </el-table-column>
-          <el-table-column prop="atTable" show-overflow-tooltip label="表">
-          </el-table-column>
-          <el-table-column fixed="right" label="操作" class-name="operation">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click="editClick(scope.row)"
-                >编辑</el-button
-              >
-              <!-- <el-popconfirm
+        </el-table-column>
+        <el-table-column
+          prop="productName"
+          show-overflow-tooltip
+          label="产品名称"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="swVersion"
+          show-overflow-tooltip
+          label="软件版本号"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="hwVersion"
+          show-overflow-tooltip
+          label="硬件版本号"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="userSwVersion"
+          show-overflow-tooltip
+          label="APP版本"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="orderQuantity"
+          show-overflow-tooltip
+          label="数量"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="cloudPlatform"
+          show-overflow-tooltip
+          label="云端"
+        >
+        </el-table-column>
+        <el-table-column prop="info" show-overflow-tooltip label="信息">
+        </el-table-column>
+        <el-table-column prop="bak" show-overflow-tooltip label="文件">
+        </el-table-column>
+        <el-table-column prop="atTable" show-overflow-tooltip label="表">
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" class-name="operation">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="editClick(scope.row)"
+              >编辑</el-button
+            >
+            <!-- <el-popconfirm
               title="这是一段内容确定删除吗？"
               @confirm="deleteClick(scope.row)"
             >
@@ -85,11 +83,11 @@
                 >删除
               </el-button>
             </el-popconfirm> -->
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
+
     <div>
       <div class="fonter">
         <el-pagination
@@ -106,20 +104,17 @@
     <el-dialog
       title="详情"
       :visible.sync="dialogFormVisible"
-      width="30%"
+      width="50%"
       center
     >
-      <el-form ref="formData" :model="formData">
-        <!-- <el-form-item label="id" label-width="100px">
-          <el-input v-model="formData.id" type="text" class="input" autocomplete="off" placeholder="请输入" ></el-input>
-        </el-form-item> -->
+      <el-form ref="formData" :model="formData" class="formbox">
         <el-form-item label="订单号" label-width="100px">
           <el-input
             v-model="formData.orderNumber"
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="orderNumber"
           ></el-input>
         </el-form-item>
         <el-form-item label="文件" label-width="100px">
@@ -128,7 +123,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="bak"
           ></el-input>
         </el-form-item>
         <el-form-item label="信息" label-width="100px">
@@ -137,7 +132,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="info"
           ></el-input>
         </el-form-item>
         <el-form-item label="表" label-width="100px">
@@ -146,7 +141,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="atTable"
           ></el-input>
         </el-form-item>
         <el-form-item label="云端" label-width="100px">
@@ -155,7 +150,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="cloudPlatform"
           ></el-input>
         </el-form-item>
         <el-form-item label="数量" label-width="100px">
@@ -164,7 +159,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="orderQuantity"
           ></el-input>
         </el-form-item>
         <el-form-item label="APP版本" label-width="100px">
@@ -173,7 +168,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="userSwVersion"
           ></el-input>
         </el-form-item>
         <el-form-item label="硬件版本号" label-width="100px">
@@ -182,7 +177,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="hwVersion"
           ></el-input>
         </el-form-item>
         <el-form-item label="软件版本号" label-width="100px">
@@ -191,7 +186,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="swVersion"
           ></el-input>
         </el-form-item>
         <el-form-item label="产品名称" label-width="100px">
@@ -200,7 +195,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="productName"
           ></el-input>
         </el-form-item>
         <el-form-item label="项目" label-width="100px">
@@ -209,7 +204,7 @@
             type="text"
             class="input"
             autocomplete="off"
-            placeholder="请输入"
+            placeholder="projectName"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -277,9 +272,9 @@ export default {
             this.total = data.total;
             this.currentpage = data.current;
             this.pagesize = data.size;
-            this.$nextTick(() => {
-              this.$refs.filterTable.bodyWrapper.scrollTop = 0;
-            });
+            // this.$nextTick(() => {
+            //   this.$refs.filterTable.bodyWrapper.scrollTop = 0;
+            // });
           } else {
             this.$message({
               message: res.data.msg,
@@ -439,6 +434,13 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+
+.contentbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 .tablebox {
   padding-left: 24px;
   background: #fff;
@@ -457,5 +459,13 @@ export default {
   justify-content: center;
   align-items: center;
   background: #fff;
+}
+.formbox {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto;
+}
+.input {
+  width: 200px;
 }
 </style>

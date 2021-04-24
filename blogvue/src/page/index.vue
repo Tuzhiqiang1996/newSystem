@@ -65,6 +65,14 @@
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
+          <el-menu-item index="7">
+            <i class="el-icon-finished"></i>
+            <span slot="title">数据录入</span>
+          </el-menu-item>
+          <el-menu-item index="6">
+            <i class="el-icon-setting"></i>
+            <span slot="title">工具辅助</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
@@ -96,7 +104,7 @@
           </div>
         </el-header>
         <el-main>
-          <div style="width:100%">
+          <div  class="pagecontent">
             <Pagehome  :defaultactive="defaultactive" />
           </div>
         </el-main>
@@ -304,5 +312,12 @@ export default {
     100% {
         background-position: -100%  0;
     }
+    }
+    .pagecontent{
+      width: 100%;
+      height: 100%;
+      display: flex;
+    justify-content: center;
+    align-items: center;
     }
 </style>

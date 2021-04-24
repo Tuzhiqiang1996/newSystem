@@ -1,7 +1,7 @@
 <!--  -->
 <template>
-  <div>
-    <div v-if="defaultactive == '1'"><DevlogList /></div>
+  <div class="contentbox">
+    <div v-if="defaultactive == '1'" ><DevlogList /></div>
     <!-- <div v-else-if="defaultactive == '2-1'"><Syslist :listid="listid" /></div> -->
     <!--小匠 X-->
     <!-- <div v-else-if="defaultactive == '2-2'"><Syslist :listid="listid" /></div> -->
@@ -10,13 +10,15 @@
     <!--大华 D-->
     <!-- <div v-else-if="defaultactive == '2-4'"><Syslist :listid="listid" /></div> -->
     <!--涂鸦 T-->
-    <div v-else-if="defaultactive == '2-1'"><XiaoJlist  /></div>
-    <div v-else-if="defaultactive == '2-2'"><DevList  /></div>
-    <div v-else-if="defaultactive == '2-3'"><Syslist listid="D"/></div>
-    <div v-else-if="defaultactive == '2-4'"><TyList  /></div>
+    <div v-else-if="defaultactive == '2-1'"><XiaoJlist /></div>
+    <div v-else-if="defaultactive == '2-2'"><DevList /></div>
+    <div v-else-if="defaultactive == '2-3'"><Syslist listid="D" /></div>
+    <div v-else-if="defaultactive == '2-4'"><TyList /></div>
     <div v-else-if="defaultactive == '3'"><SystemList /></div>
     <div v-else-if="defaultactive == '4'"><OrderList /></div>
     <div v-else-if="defaultactive == '5'"><UseList /></div>
+    <div v-else-if="defaultactive == '6'"><Utilpage /></div>
+    <div v-else-if="defaultactive == '7'"><Dataentry /></div>
   </div>
 </template>
 
@@ -31,6 +33,8 @@ import DevlogList from "./devlogList";
 import XiaoJlist from "./XiaoJlist";
 import TyList from "./TyList";
 import Syslist from "./dahuaList";
+import Utilpage from "../utilpage";
+import Dataentry from "./dataentry";
 export default {
   name: "page",
   //import引入的组件需要注入到对象中才能使用
@@ -45,17 +49,17 @@ export default {
     XiaoJlist,
     TyList,
     Syslist,
+    Utilpage,
+    Dataentry,
   },
   data() {
     //这里存放数据
-    return {
-    };
+    return {};
   },
   //监听属性 类似于data概念
   computed: {},
   //监控data中的数据变化
-  watch: {
-  },
+  watch: {},
   //方法集合
   methods: {},
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -73,4 +77,15 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+.contentbox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  div{
+    width: 100%;
+  }
+}
 </style>

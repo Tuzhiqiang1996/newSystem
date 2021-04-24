@@ -1,7 +1,7 @@
 <!--  -->
 <template>
-  <div class="" style="width: 100%">
-    <div style="">
+  <div class="contentbox" >
+    <div style="width:100%">
       <div class="top">
         <el-form
           :inline="true"
@@ -175,7 +175,7 @@
         </el-table>
       </div>
     </div>
-    <div>
+    <div style="width:100%">
       <div class="fonter">
         <!-- layout="prev, pager, next" -->
         <div class="fchild">
@@ -538,8 +538,8 @@ export default {
               showClose: true,
               type: "success",
             });
-          }else{
-              this.$message({
+          } else {
+            this.$message({
               message: res.data.msg,
               showClose: true,
               type: "error",
@@ -548,11 +548,11 @@ export default {
         })
         .catch((err) => {
           console.error(err);
-            this.$message({
-              message: err,
-              showClose: true,
-              type: "error",
-            });
+          this.$message({
+            message: err,
+            showClose: true,
+            type: "error",
+          });
         });
     },
     showdialog(e, n, t) {
@@ -590,6 +590,10 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+.contentbox{
+  width: 100%;
+  height: 100%;
+}
 .top {
   display: flex;
   align-items: center;
@@ -623,7 +627,7 @@ export default {
   grid-template-columns: auto auto auto;
   grid-template-rows: auto auto auto;
 }
-.input{
+.input {
   width: 200px;
 }
 </style>

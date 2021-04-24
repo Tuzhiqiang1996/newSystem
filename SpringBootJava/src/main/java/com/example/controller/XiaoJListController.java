@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -123,5 +126,38 @@ public class XiaoJListController {
         xiaoJList1.setCheckDatetime(xiaoJList.getCheckDatetime());
         xiaoJList1.setCheckCount(xiaoJList.getCheckCount());
         return Result.succ("修改成功！");
+    }
+    @PostMapping("/xjlist")
+    public Result xjlist(@RequestBody List<XiaoJList> xjlists) {
+        if (xjlists.size() == 0 || xjlists == null) {
+            return Result.fail("插入数据为空！");
+        }
+        XiaoJList savefile = new XiaoJList();
+        List<XiaoJList> savefileList = new ArrayList<>(xjlists);
+        for (int i = 0; i < savefileList.size(); i++) {
+            BeanUtil.copyProperties((xjlists.get(i)), savefile);
+            xiaoJListService.saveOrUpdate(savefile);
+        }
+        return Result.succ("插入成功！", savefile);
+    }
+
+    @PostMapping("/xjreceivefilehas")
+//    public Result receivefilehas( @RequestParam(value = "id",required = false) Integer id, @RequestParam(value = "savefiles",required = false) List<String> savefiles) {
+    public Result tyreceivefilehas(@RequestBody HashMap<String, Object> map) {
+        // 接收List
+        List<XiaoJList> savefiledata = (List<XiaoJList>) map.get("savefiles");
+        // 接收另外一个参数
+        Integer id = (Integer) map.get("id");
+        List<XiaoJList> savefiles = new ArrayList<>(savefiledata);
+        for (int i = 0; i < savefiledata.size(); i++) {
+
+            XiaoJList savefile = new XiaoJList();
+            savefile.setOrderId(id);
+            savefile.setDeviceid(String.valueOf(savefiledata.get(i)));
+            BeanUtil.copyProperties(savefiledata.get(i), savefile, "order_id", "deviceid");
+//            System.out.println(savefile);
+            xiaoJListService.saveOrUpdate(savefile);
+        }
+        return Result.succ("插入成功！");
     }
 }

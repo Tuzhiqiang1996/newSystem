@@ -1,21 +1,30 @@
-<!-- 大华 -->
+<!--  -->
 <template>
-<div class=''>大华</div>
+<div class='tabbox' >
+  <el-tabs :tab-position="tabPosition" style="height: 100%;">
+    <el-tab-pane label="进制转换" class='pane'><Conversionsystem/></el-tab-pane>
+    <el-tab-pane label="数据导出" class='pane'><Exportdata/></el-tab-pane>
+  </el-tabs>
+</div>
 </template>
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-
+import Conversionsystem from './Conversionsystem'
+import Exportdata from './Exportdata'
 export default {
-name:'',
+name:'index',
 //import引入的组件需要注入到对象中才能使用
-components: {},
+components: {
+  Conversionsystem,
+  Exportdata,
+},
 props:[],
 data() {
 //这里存放数据
 return {
-
+tabPosition: 'left'
 };
 },
 //监听属性 类似于data概念
@@ -45,5 +54,14 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
-
+.tabbox{
+  width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 24px 0px;
+}
+.pane{
+  min-height: 500px;
+}
 </style>

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 120.79.50.47
-Source Server Version : 50642
-Source Host           : 120.79.50.47:3308
+Source Server         : 172.50.57.216
+Source Server Version : 50616
+Source Host           : 172.50.57.216:3306
 Source Database       : wtwdiotdb
 
 Target Server Type    : MYSQL
-Target Server Version : 50642
+Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2021-03-13 08:56:33
+Date: 2021-04-24 12:10:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `tb_order` (
   `bak` varchar(255) DEFAULT NULL,
   `at_table` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tb_order
@@ -47,7 +47,7 @@ INSERT INTO `tb_order` VALUES ('6', '1006', null, 'LT01', null, null, null, '0',
 INSERT INTO `tb_order` VALUES ('7', '1007', null, 'LT02', null, null, null, '0', '酷宅云', '15.5K', 'B05-B_WTW-SNL-05_15500_20201110004', null);
 INSERT INTO `tb_order` VALUES ('8', 'G20-11-27009', 'RE705S', 'B02-F', 'RE705S-V1.3.2-20201022', null, '1.3.2', '0', '酷宅云', '2K', 'B02-F_WTW-SNL-02_2000_20201127005(1001139543,1001139d12)', null);
 INSERT INTO `tb_order` VALUES ('9', '1009', 'RE705F', 'LT02', null, null, '1.3.2', '0', '酷宅云', '200', 'B05-B_WTW-SNL-05_200_20201211002', null);
-INSERT INTO `tb_order` VALUES ('10', 'G20_12_08013', 'RE706B', 'XIAOJIANG', 'W400.T031.3175', null, null, '0', '小匠', null, null, 'tb_atcmd_xiaojiang');
+INSERT INTO `tb_order` VALUES ('10', 'G20_12_08013', 'RE706B', 'XIAOJIANG', 'W400.T031.3175', null, null, '0', '小匠', '', null, 'tb_atcmd_xiaojiang');
 INSERT INTO `tb_order` VALUES ('11', 'G20_12_08014', 'RE706B', 'XIAOJIANG', 'W400.T031.3175', null, null, '0', '小匠', null, null, 'tb_atcmd_xiaojiang');
 INSERT INTO `tb_order` VALUES ('12', 'G20_12_08015', 'RE706B', 'XIAOJIANG', 'W400.T031.3175', null, null, '0', '小匠', null, null, 'tb_atcmd_xiaojiang');
 INSERT INTO `tb_order` VALUES ('13', 'G20_12_08016', 'RE706B', 'XIAOJIANG', 'W400.T031.3175', null, null, '0', '小匠', null, null, 'tb_atcmd_xiaojiang');
@@ -59,3 +59,5 @@ INSERT INTO `tb_order` VALUES ('18', 'DG-PCBA20210104', 'RE706B', 'XIAOJIANG', '
 INSERT INTO `tb_order` VALUES ('19', 'RE755_0304', 'RE755A', 'B5', 'RE755A_TUYA_I2C_V1.1.3_20210307', null, '1.1.3', '0', '涂鸦', '3500', null, 'tb_atcmd_tuya');
 INSERT INTO `tb_order` VALUES ('20', 'N21-02-25012', 'RE705F', 'LT02', 'RE705F-V1.3.5-20201218', null, '1.3.5', '0', '酷宅云', '20K五色灯', null, null);
 INSERT INTO `tb_order` VALUES ('21', 'N21-02-25011', 'RE705S', 'LT01', 'RE705S-V1.3.2-20201022', null, '1.3.2', '0', '酷宅云', '20K双色灯', null, null);
+INSERT INTO `tb_order` VALUES ('22', 'N21-03-10006', 'RE705S', 'LT01', 'RE705S-V1.3.2-20201022', null, '1.3.2', '0', '酷宅云', '10.6K双色灯', null, null);
+INSERT INTO `tb_order` VALUES ('29', 'N21-03-01001', 'RE755A', 'B5', 'RE755A_TUYA_I2C_V1.1.7_20210407', '', '1.1.3', '0', '涂鸦', '3500', '', 'tb_atcmd_tuya');
