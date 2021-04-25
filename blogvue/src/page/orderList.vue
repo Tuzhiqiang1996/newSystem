@@ -1,4 +1,4 @@
-<!--  -->
+<!-- 设备订单 -->
 <template >
   <div class=" ">
     <div class="add">
@@ -83,7 +83,8 @@
                 >删除
               </el-button>
             </el-popconfirm> -->
-          </template>
+             <el-button type="text" size="small" @click="addclick(scope.row)"
+              >新增</el-button></template>
         </el-table-column>
       </el-table>
     </div>
@@ -293,6 +294,22 @@ export default {
       this.dialogFormVisible = true;
       this.formData = {};
     },
+    //新增 2
+    addclick(row) {
+      this.selectid = 1;
+      this.dialogFormVisible = true;
+      this.formData.atTable = row.atTable;
+      this.formData.bak = row.bak;
+      this.formData.cloudPlatform = row.cloudPlatform;
+      this.formData.hwVersion = row.hwVersion;
+      this.formData.info = row.info;
+      this.formData.orderNumber = row.orderNumber;
+      this.formData.orderQuantity = row.orderQuantity;
+      this.formData.productName = row.productName;
+      this.formData.projectName = row.projectName;
+      this.formData.swVersion = row.swVersion;
+      this.formData.userSwVersion = row.userSwVersion;
+    },
     //编辑 2
     editClick(row) {
       this.dialogFormVisible = true;
@@ -358,18 +375,20 @@ export default {
           console.error(err);
         });
     },
-
+/**
+ * , {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+            "Content-Type": "application/json;charset=utf-8",
+          },
+        }
+ */
     //编辑
     edit() {
       let url = "/editorder";
       let params = JSON.stringify(this.formData);
       this.$axios
-        .post(url, params, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-            "Content-Type": "application/json;charset=utf-8",
-          },
-        })
+        .post(url, params)
         .then((res) => {
           if (res.data.code == 200) {
             this.dialogFormVisible = false;

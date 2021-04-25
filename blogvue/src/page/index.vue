@@ -3,7 +3,7 @@
   <div class="box">
     <!-- <router-link to="/HelloWorld">数据大屏</router-link> -->
     <el-container style="height: 100%">
-      <el-aside width="" style="background: #00152a;">
+      <el-aside width="" style="background: #00152a">
         <div class="title">MU</div>
         <el-menu
           :default-active="defaultactive"
@@ -41,7 +41,7 @@
             <i class="el-icon-s-grid"></i>
             <span slot="title">设备列表</span>
           </el-menu-item> -->
-            <el-submenu index="2">
+          <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-s-grid"></i>
               <span slot="title">设备列表</span>
@@ -53,19 +53,19 @@
               <el-menu-item index="2-4">涂鸦</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="3"  style="display:none">
+          <el-menu-item index="3" style="display: none">
             <i class="el-icon-tickets"></i>
             <span slot="title">设备信息</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="4" v-show="getUser.status != 2">
             <i class="el-icon-document"></i>
             <span slot="title">设备订单</span>
           </el-menu-item>
-          <el-menu-item index="5">
+          <el-menu-item index="5" v-show="getUser.status != 2">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
-          <el-menu-item index="7">
+          <el-menu-item index="7" v-show="getUser.status != 2">
             <i class="el-icon-finished"></i>
             <span slot="title">数据录入</span>
           </el-menu-item>
@@ -84,7 +84,20 @@
               class="btns"
             ></el-button>
             <div class="rightimg">
-              <P>欢迎：{{ getUser.username }}</P>
+              <P
+                >欢迎：<i
+                  class="el-icon-user-solid"
+                  :style="{
+                    color:
+                      getUser.status == 0
+                        ? '#FF0000'
+                        : getUser.status == 1
+                        ? '#FFFF00'
+                        : '#00FFFF',
+                  }"
+                ></i
+                >-{{ getUser.username }}</P
+              >
 
               <el-dropdown @command="handleCommand" class="eldown">
                 <el-avatar
@@ -104,8 +117,8 @@
           </div>
         </el-header>
         <el-main>
-          <div  class="pagecontent">
-            <Pagehome  :defaultactive="defaultactive" />
+          <div class="pagecontent">
+            <Pagehome :defaultactive="defaultactive" />
           </div>
         </el-main>
         <!-- <el-footer>Footer</el-footer> -->
@@ -146,9 +159,16 @@ export default {
     ...mapGetters(["getUser"]),
   },
   //监控data中的数据变化
-  watch: {},
+  watch: {
+    $route() {
+      this.getDatanum(); //换成你的方法
+    },
+  },
   //方法集合
   methods: {
+    getDatanum() {
+      this.defaultactive = "2-1";
+    },
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
     },
@@ -162,7 +182,6 @@ export default {
       console.log(key, keyPath);
       this.defaultactive = key;
       // sessionStorage.setItem("active",key)
-
     },
     errorHandler() {
       return true;
@@ -246,12 +265,11 @@ export default {
   text-align: center;
   line-height: 200px;
   // min-width: 65px;
-
 }
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
-  }
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
 
 .el-main {
   background-color: #e9eef3;
@@ -292,32 +310,45 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-    // width: 300px;
-    // height: 200px;
-    // position: absolute;
-    // left: 50%;
-    // margin-left: -150px;
-    background-image: -webkit-linear-gradient(left,blue,#66ffff 10%,#cc00ff 20%,#CC00CC 30%, #CCCCFF 40%, #00FFFF 50%,#CCCCFF 60%,#CC00CC 70%,#CC00FF 80%,#66FFFF 90%,blue 100%);
-    -webkit-text-fill-color: transparent;/* 将字体设置成透明色 */
-    -webkit-background-clip: text;/* 裁剪背景图，使文字作为裁剪区域向外裁剪 */
-    -webkit-background-size: 200% 100%;
-    -webkit-animation: masked-animation 4s linear infinite;
-    font-size: 35px;
+  // width: 300px;
+  // height: 200px;
+  // position: absolute;
+  // left: 50%;
+  // margin-left: -150px;
+  background-image: -webkit-linear-gradient(
+    left,
+    blue,
+    #66ffff 10%,
+    #cc00ff 20%,
+    #cc00cc 30%,
+    #ccccff 40%,
+    #00ffff 50%,
+    #ccccff 60%,
+    #cc00cc 70%,
+    #cc00ff 80%,
+    #66ffff 90%,
+    blue 100%
+  );
+  -webkit-text-fill-color: transparent; /* 将字体设置成透明色 */
+  -webkit-background-clip: text; /* 裁剪背景图，使文字作为裁剪区域向外裁剪 */
+  -webkit-background-size: 200% 100%;
+  -webkit-animation: masked-animation 4s linear infinite;
+  font-size: 35px;
 }
 
 @keyframes masked-animation {
-    0% {
-        background-position: 0  0;
-    }
-    100% {
-        background-position: -100%  0;
-    }
-    }
-    .pagecontent{
-      width: 100%;
-      height: 100%;
-      display: flex;
-    justify-content: center;
-    align-items: center;
-    }
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+.pagecontent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

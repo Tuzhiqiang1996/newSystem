@@ -1,7 +1,7 @@
 <!--  -->
 <template>
-  <div class="contentbox" >
-    <div style="width:100%">
+  <div class="contentbox">
+    <div style="width: 100%">
       <div class="top">
         <el-form
           :inline="true"
@@ -175,7 +175,7 @@
         </el-table>
       </div>
     </div>
-    <div style="width:100%">
+    <div style="width: 100%">
       <div class="fonter">
         <!-- layout="prev, pager, next" -->
         <div class="fchild">
@@ -319,6 +319,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
+import { mapGetters } from "vuex";
 export default {
   name: "devList",
   //import引入的组件需要注入到对象中才能使用
@@ -412,7 +413,9 @@ export default {
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+    ...mapGetters(["getUser"]),
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合
@@ -527,6 +530,11 @@ export default {
       this.numCount(1, 3);
     },
     onSave() {
+      if (this.getUser.status != 2) {
+        this.modification();
+      }
+    },
+    modification() {
       let url = "/listFix";
       this.$axios
         .post(url, this.formData)
@@ -555,9 +563,12 @@ export default {
           });
         });
     },
+
     showdialog(e, n, t) {
       // console.log("dialog", e, n, t);
-      this.dialogFormVisible = true;
+      if (this.getUser.status != 2) {
+        this.dialogFormVisible = true;
+      }
       this.formData.id = e.id;
       this.formData.sn = e.sn;
       this.formData.orderId = e.orderId;
@@ -590,7 +601,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
-.contentbox{
+.contentbox {
   width: 100%;
   height: 100%;
 }

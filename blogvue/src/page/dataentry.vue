@@ -2,9 +2,33 @@
   <div class="box">
     <div class="content">
       <div>
-        <el-radio v-model="radio" label="1">酷宅云</el-radio>
-        <el-radio v-model="radio" label="2">涂鸦云</el-radio>
-        <el-radio v-model="radio" label="3">小匠</el-radio>
+        <el-input v-model="orderid" placeholder="手动输入orderid"></el-input>
+      </div>
+      <div style="padding-top: 25px">
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="tb_device_list_re705"
+          placement="top"
+        >
+          <el-radio v-model="radio" label="1">酷宅云</el-radio>
+        </el-tooltip>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="tb_device_list_re755"
+          placement="top"
+        >
+          <el-radio v-model="radio" label="2">涂鸦云</el-radio>
+        </el-tooltip>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="tb_device_list_xiaojiang"
+          placement="top"
+        >
+          <el-radio v-model="radio" label="3">小匠</el-radio>
+        </el-tooltip>
       </div>
       <div style="padding-top: 25px">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
@@ -280,7 +304,7 @@ export default {
           checkDatetime: "",
           createTime: "",
           checkCount: "",
-          orderId: 30,
+          orderId: this.orderid,
           packages: "",
           packageDatetime: "",
         };
@@ -408,14 +432,17 @@ export default {
     },
     btns() {
       let flie = this.name;
-      if (!flie) {
+      let orderid = this.orderid;
+
+      if (!flie || !orderid) {
         this.$message({
-          message: "请先上传文件！",
+          message: "请先上传文件！或者orderid为空",
           showClose: true,
           type: "error",
         });
         return;
       }
+
       this.$refs.upload.submit();
     },
   },

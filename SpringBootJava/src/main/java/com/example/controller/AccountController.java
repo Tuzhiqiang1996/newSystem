@@ -92,19 +92,19 @@ public class AccountController {
      * 注册功能
      * Regina
      */
-    @ResponseBody
+//    @RequiresAuthentication
     @PostMapping("/regina")
-    public Result regina(@Validated @RequestBody User user) {
+    public Result regina(@RequestBody User user) {
         User user1 = userService.getOne(new QueryWrapper<User>().eq("userName", user.getUsername()));
-
+        System.out.println(user);
         if (user1 != null) {
             System.out.println(user);
-            return Result.fail("用户已存在");
+            return Result.fail("用户已存在！");
         }
-        System.out.println(user);
-        System.out.println(user1);
-        User userRegina = null;
-        userRegina = new User();
+        if (user.getPassword() == null || user.getAvatar() == null || user.getUsername() == null || user.getStatus() == null||user.getEmail()== null) {
+            return Result.fail("填写信息不全！");
+        }
+        User userRegina = new User();
         //加密
         String pass = user.getPassword();
         userRegina.setUsername(user.getUsername());
@@ -114,7 +114,7 @@ public class AccountController {
         userRegina.setCreated(LocalDateTime.now());
         userRegina.setStatus(user.getStatus());
         userService.saveOrUpdate(userRegina);
-        System.out.println("注册成功！" + userRegina );
+//        System.out.println("注册成功！" + userRegina);
         return Result.succ("注册成功！");
     }
 
@@ -142,7 +142,7 @@ public class AccountController {
             currentPage = 1;
         }
         Page page = new Page(currentPage, 5);
-        IPage userlists = userService.page(page, new QueryWrapper<User>().orderByDesc("created"));
+        IPage userlists = userService.page(page, new QueryWrapper<User>().orderByAsc("created"));
         JSONObject jsonObject = new JSONObject(userlists); //可以将json格式的字符串变成json对象
         JSONArray jsonArray = (JSONArray) jsonObject.get("records");
 //        System.out.println(jsonArray);
@@ -179,4 +179,56 @@ public class AccountController {
         userService.removeById(userid);
         return Result.succ("删除成功", null);
     }
+
+    @RequiresAuthentication
+    @PostMapping("/user/edit")
+    public Result useredit(@Validated @RequestBody User user) {
+        //根据当前id获取用户信息
+        User dd = userService.getById(user.getId());
+        //设置更改时间
+        dd.setLastLogin(LocalDateTime.now());
+        if (user.getUsername() != null && user.getUsername().length() != 0) {
+            dd.setUsername(user.getUsername());
+            System.out.println("name修改");
+        }
+        if (user.getEmail() != null && user.getEmail().length() != 0) {
+            dd.setEmail(user.getEmail());
+            System.out.println("邮箱修改");
+        }
+        if (user.getStatus() != null) {
+            dd.setStatus(user.getStatus());
+            System.out.println("权限修改");
+        }
+        userService.saveOrUpdate(dd);
+//        System.out.println(jsonObject);
+        JSONObject jsonObject = new JSONObject(dd);//可以将json格式的字符串变成json对象
+        jsonObject.remove("password");//过滤的值
+        return Result.succ("修改成功！", jsonObject);
+    }
+
+    //    @RequiresAuthentication
+    @PostMapping("/user/pass")
+    public Result userpass(@RequestParam Integer id, @RequestParam String password, @RequestParam String newpassword) {
+//        System.out.println(id + "" + password + "" + newpassword);
+
+        User dd = userService.getById(id);
+        if (password != null && password.length() != 0) {
+
+            if (SecureUtil.md5(password).equals(dd.getPassword())) {
+                dd.setPassword(SecureUtil.md5(newpassword));
+                dd.setLastLogin(LocalDateTime.now());
+                System.out.println("密码修改");
+                userService.saveOrUpdate(dd);
+            } else {
+                System.out.println("密码效验错误");
+                return Result.fail("密码效验错误！");
+            }
+
+        }
+//        System.out.println(dd);
+        JSONObject jsonObject = new JSONObject(dd);//可以将json格式的字符串变成json对象
+        jsonObject.remove("password");//过滤的值
+        return Result.succ("修改成功!", jsonObject);
+    }
+
 }

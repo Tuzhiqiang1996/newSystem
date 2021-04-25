@@ -42,20 +42,6 @@
               /></el-form-item>
             </div>
             <div v-if="!log">
-              <!-- <div class="item">
-                <i class="iconfont icon-password"></i>
-                <el-form-item prop="avatar" class="itemwidth">
-                  <el-input
-                    autocomplete="off"
-                    type="text"
-                    class="input"
-                    v-model="ruleForm.avatar"
-                    maxlength="20"
-                    @keyup.enter="regina"
-                    placeholder="作者"
-                /></el-form-item>
-              </div> -->
-
               <div class="item">
                 <i class="iconfont icon-password"></i>
                 <el-form-item prop="email" class="itemwidth">
@@ -72,8 +58,8 @@
               </div>
             </div>
             <div v-if="!log" class="permissions">
-              <el-radio v-model="radio" label="1">权限1</el-radio>
-              <el-radio v-model="radio" label="2">权限2</el-radio>
+              <el-radio v-model="radio" label="1">VIP用户</el-radio>
+              <el-radio v-model="radio" label="2">普通用户</el-radio>
             </div>
             <el-button
               :plain="true"
@@ -81,6 +67,7 @@
               :disabled="isLoginAble"
               @click="login('ruleForm')"
               v-if="log"
+              :loading="islogin"
             >
               <!-- @click="login('ruleForm')" -->
               立即登录
@@ -97,27 +84,22 @@
           </el-form>
 
           <div class="tip">
-            <p>默认用户名：markerhub ，默认密码：111111</p>
-            <div @click="toggle">
+            <!-- <p>默认用户名：root，默认密码：******</p> -->
+            <div @click="toggle" style="display: none">
               <p>{{ log ? "还没账号？" : "已有账号！" }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
-
   </div>
 </template>
 <script>
-
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 import Image from "../utils/image.json";
 export default {
   name: "Login",
-  components: {
-  },
+  components: {},
   data() {
     var validatoremail = (rule, value, callback) => {
       // var MobileRegex = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
@@ -134,10 +116,11 @@ export default {
       radio: "1",
       radioimg: 1,
       log: true,
+      islogin: false,
       Image: Image,
       ruleForm: {
-        userName: "markerhub",
-        userPwd: "111111",
+        userName: "",
+        userPwd: "",
         avatar: null,
         email: "",
         status: null,
@@ -165,9 +148,7 @@ export default {
     };
   },
   computed: {
-    isLoginAble() {
-      // return !(this.userName && this.userPwd);
-    },
+    ...mapGetters(["getUser"]),
   },
   created() {
     // console.log(Image);
@@ -176,13 +157,18 @@ export default {
   watch: {
     log: function (newVal, oldVal) {
       console.log(newVal, oldVal);
-      this.ruleForm.userName = newVal ? "markerhub" : "";
-      this.ruleForm.userPwd = newVal ? "111111" : "";
+      // this.ruleForm.userName = newVal ? "root" : "";
+      // this.ruleForm.userPwd = newVal ? "111111" : "";
       this.ruleForm.avatar = Image[this.radioimg].img;
+    },
+    $route() {
+      // this.getDatanum(); //换成你的方法
+      this.ruleForm = {};
     },
   },
   methods: {
     login(formName) {
+      this.islogin = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           //正确的账号: doudou  密码:123456
@@ -209,33 +195,40 @@ export default {
                 this.$router.push({
                   path: "/home",
                 });
+                // window.location.reload();
                 this.$message({
                   message: "登录成功！",
                   showClose: true,
                   type: "success",
                 });
+                this.islogin = false;
               } else {
                 this.$message({
                   message: res.data.msg,
                   center: true,
                   type: "error",
                 });
+                setTimeout(() => {
+                  this.islogin = false;
+                }, 4000);
               }
             })
             .catch((err) => {
               console.error("抛出异常" + err);
-
             });
         } else {
           console.log("error submit!!");
           return false;
         }
       });
+      setTimeout(() => {
+        this.islogin = false;
+      }, 4000);
     },
     ...mapMutations({ SET_TOKEN: "SET_TOKEN", SET_USERINFO: "SET_USERINFO" }),
     regina(ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
-        if (valid) {
+        if (valid && this.getUser.status == 0) {
           let options = {
             username: this.ruleForm.userName,
             password: this.ruleForm.userPwd,
@@ -243,7 +236,7 @@ export default {
             email: this.ruleForm.email,
             status: this.radio,
           };
-          console.log(options)
+          // console.log(options)
           this.$axios
             .post("/regina", options)
             .then((res) => {
@@ -424,6 +417,7 @@ input:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #d3d7f7;
 }
-
-
+.permissions {
+  margin-top: 20px;
+}
 </style>
