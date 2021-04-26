@@ -156,6 +156,7 @@ public class DeviceListController {
      *         正确的做法是放在循环内 让她每次循环创建新的对象 而不是只更改一条数据
      *
      * @return com.example.common.lang.Result
+     * 未使用
      */
 
     @PostMapping("/receivefilehas")
@@ -187,6 +188,7 @@ public class DeviceListController {
      * 拿到数据进行巴拉巴拉..
      *
      * @return com.example.common.lang.Result
+     * 使用中
      */
     @PostMapping("/receivefile")
     public Result receivefile(@RequestBody List<DeviceList> savefiles) {
@@ -195,12 +197,21 @@ public class DeviceListController {
         }
         DeviceList savefile = new DeviceList();
         List<DeviceList> savefileList = new ArrayList<>(savefiles);
+        /**
+         * 第一种时间长
+         * 1000/1min
+         * 1000每次
+         */
         for (int i = 0; i < savefileList.size(); i++) {
             BeanUtil.copyProperties((savefiles.get(i)), savefile);
-            //System.out.println(savefileList.get(i).getDeviceid());
-            //System.out.println(savefile);
             deviceListService.saveOrUpdate(savefile);
         }
+        /**
+         * 第二种时间明显减少
+         * 1000/78ms
+         * 1000每次
+         */
+        deviceListService.saveBatch(savefileList);
         return Result.succ("插入成功！", savefile);
     }
 }

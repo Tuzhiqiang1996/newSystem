@@ -2,15 +2,33 @@
 <template>
   <div class="formbox">
     <p>数据导出</p>
-    <el-form ref="form" :model="formInline" label-width="80px">
+    <el-form
+      ref="formInline"
+      :rules="regiRules"
+      :model="formInline"
+      label-width="80px"
+      status-icon
+    >
       <el-form-item label="前缀">
-        <el-input v-model="formInline.label" style="width: 300px"></el-input>
+        <el-input
+          v-model="formInline.label"
+          placeholder="前缀名"
+          style="width: 300px"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="开始值">
-        <el-input v-model="formInline.user" style="width: 300px"></el-input>
+      <el-form-item label="开始值" prop="user">
+        <el-input
+          v-model="formInline.user"
+          placeholder="十进制数字"
+          style="width: 300px"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="结束值">
-        <el-input v-model="formInline.password" style="width: 300px"></el-input>
+      <el-form-item label="结束值" prop="password">
+        <el-input
+          v-model="formInline.password"
+          placeholder="十进制数字"
+          style="width: 300px"
+        ></el-input>
       </el-form-item>
 
       <el-form-item label="文件名">
@@ -28,8 +46,10 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="onSubmit('formInline')"
+          >生成文件</el-button
+        >
+        <el-button @click="resetForm">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -45,6 +65,22 @@ export default {
   components: {},
   props: [],
   data() {
+    var validatePass1 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入"));
+      } else {
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请再次输入"));
+      } else if (value <= this.formInline.password) {
+        callback(new Error("不得小于等于开始值"));
+      } else {
+        callback();
+      }
+    };
     //这里存放数据
     return {
       formInline: {
@@ -54,8 +90,12 @@ export default {
         filename: "数据表",
         sufname: ".csv",
       },
-        list: [],
+      list: [],
       strdata: "",
+      regiRules: {
+        user: [{ validator: validatePass1, trigger: "blur" }],
+        password: [{ validator: validatePass2, trigger: "blur" }],
+      },
     };
   },
   //监听属性 类似于data概念
@@ -64,11 +104,23 @@ export default {
   watch: {},
   //方法集合
   methods: {
-    onSubmit() {
-      console.log("submit!",this.formInline);
-      this.loopfun()
+    resetForm() {
+      this.formInline.label = "";
+      // this.formInline.user = "";
+      // this.formInline.password = "";
+      this.$refs.formInline.resetFields();
     },
-     loopfun() {
+    onSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.loopfun();
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    loopfun() {
       let v1 = +this.formInline.user;
       let v2 = +this.formInline.password;
       let v3 = this.formInline.label;
@@ -103,7 +155,7 @@ export default {
       // 对下载的文件命名
       link.download = `${this.formInline.filename}${this.formInline.sufname}`;
       link.click();
-       this.$message.success('操作成功！');
+      this.$message.success("操作成功！");
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -125,5 +177,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 </style>

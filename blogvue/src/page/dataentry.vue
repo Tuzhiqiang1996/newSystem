@@ -1,8 +1,32 @@
 <template>
   <div class="box">
     <div class="content">
-      <div>
-        <el-input v-model="orderid" placeholder="手动输入orderid"></el-input>
+      <div style="">
+        可选参数：
+        <el-input
+          style="width: 300px"
+          v-model="orderid"
+          placeholder="手动输入orderid"
+        ></el-input>
+      </div>
+      <div style="padding-top: 25px">
+        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+          <el-form-item label="订单号：">
+            <el-input
+              v-model="formInline.ordernumber"
+              placeholder="例：B02-F_WTW-SNL-02_170"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button
+              type="primary"
+              @click="savelistbtn"
+              :disabled="isdisabled"
+              >插入</el-button
+            >
+          </el-form-item>
+        </el-form>
       </div>
       <div style="padding-top: 25px">
         <el-tooltip
@@ -30,39 +54,73 @@
           <el-radio v-model="radio" label="3">小匠</el-radio>
         </el-tooltip>
       </div>
-      <div style="padding-top: 25px">
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="订单号：">
-            <el-input
-              v-model="formInline.ordernumber"
-              placeholder="例：B02-F_WTW-SNL-02_170"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-            <el-button
-              type="primary"
-              @click="savelistbtn"
-              :disabled="isdisabled"
-              >插入</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
-      <el-upload
-        class="upload-demo"
-        drag
-        ref="upload"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        multiple
-        :auto-upload="false"
-        :file-list="fileList"
-        :on-change="handleChange"
-        :on-success="success"
+      <el-tabs
+        v-model="activeName"
+        tab-position="left"
+        style="padding: 10px"
+        @tab-click="handleClick"
       >
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      </el-upload>
+        <el-tab-pane label="文件上传" name="1">
+          <el-upload
+            v-show="true"
+            class="upload-demo"
+            drag
+            ref="upload"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            multiple
+            :auto-upload="false"
+            :file-list="fileList"
+            :on-change="handleChange"
+            :on-success="success"
+            :http-request="uploadFile"
+          >
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">
+              将文件拖到此处，或<em>点击上传</em>
+            </div>
+          </el-upload>
+        </el-tab-pane>
+        <el-tab-pane label="数字生成" name="2">
+          <div v-show="true">
+            <el-form
+              ref="formInlinelist"
+              :rules="regiRules"
+              :model="formInlinelist"
+              label-width="80px"
+              status-icon
+              class="formbox"
+            >
+              <el-form-item label="前缀">
+                <el-input
+                  v-model="formInlinelist.label"
+                  placeholder="前缀名"
+                  style="width: 300px"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="开始值" prop="user">
+                <el-input
+                  v-model="formInlinelist.user"
+                  placeholder="十进制数字"
+                  style="width: 300px"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="结束值" prop="password">
+                <el-input
+                  v-model="formInlinelist.password"
+                  placeholder="十进制数字"
+                  style="width: 300px"
+                ></el-input>
+              </el-form-item>
+              <div>
+                <el-button size="medium" @click="onSubmitnum('formInlinelist')"
+                  >生成数字数组</el-button
+                >
+              </div>
+            </el-form>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+      <div class="updata"></div>
       <div>
         <el-button size="medium" type="primary" @click="btn"
           >获取orderID</el-button
@@ -86,8 +144,25 @@ export default {
   components: {},
   props: [],
   data() {
+    var validatePass1 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入"));
+      } else {
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请再次输入"));
+      } else if (value <= this.formInlinelist.user) {
+        callback(new Error("不得小于等于开始值"));
+      } else {
+        callback();
+      }
+    };
     //这里存放数据
     return {
+      activeName: "1",
       radio: "1",
       fileList: [],
       ee: "",
@@ -101,6 +176,15 @@ export default {
         ordernumber: "",
       },
       isdisabled: true, // 是否查询到
+      formInlinelist: {
+        label: "",
+        user: "",
+        password: "",
+      },
+      regiRules: {
+        user: [{ validator: validatePass1, trigger: "blur" }],
+        password: [{ validator: validatePass2, trigger: "blur" }],
+      },
     };
   },
   //监听属性 类似于data概念
@@ -265,22 +349,24 @@ export default {
     },
     success(response, file, fileList) {
       console.log(response, file, fileList);
-      let reader = new FileReader();
-      reader.readAsText(file.raw);
-      reader.onload = (e) => {
-        this.ee = e.target.result;
-        console.log(e.target.result);
-        this.datadevlist = e.target.result;
-        // this.refile(fileList);
-        this.arraylist(this.datadevlist);
-      };
+      // let reader = new FileReader();
+      // reader.readAsText(file.raw);
+      // reader.onload = (e) => {
+      //   this.ee = e.target.result;
+      //   console.log(e.target.result);
+      //   this.datadevlist = e.target.result;
+      //   // this.refile(fileList);
+      //   this.arraylist(this.datadevlist);
+      // };
     },
     //格式化数组
     arraylist(e) {
       let list = e.replace(/([.\n\r]+)/g, ",");
       let lista = list.split(",");
       // console.log("list", lista);
-
+      this.Selectcloud(lista);
+    },
+    Selectcloud(lista) {
       if (this.radio == 1) {
         this.datalists(lista, this.orderid);
       } else {
@@ -442,8 +528,58 @@ export default {
         });
         return;
       }
+      if (this.formInlinelist.user) {
+        this.Selectcloud(this.datadevlist);
+        console.log("e", this.datadevlist);
+      } else {
+        this.$refs.upload.submit();
+      }
+    },
+    //覆盖上传 不走success函数
+    uploadFile(params) {
+      console.log("dd", this.formInlinelist.user);
 
-      this.$refs.upload.submit();
+      let reader = new FileReader();
+      reader.readAsText(params.file);
+      reader.onload = (e) => {
+        this.ee = e.target.result;
+        console.log(e.target.result);
+        this.datadevlist = e.target.result;
+        this.arraylist(this.datadevlist);
+      };
+    },
+    handleClick(tab, event) {
+      // console.log(tab, event);
+    },
+    onSubmitnum(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.loopfun();
+          this.name = "666";
+          this.$message({
+            message: "数组已生成！",
+            showClose: true,
+            type: "success",
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    loopfun() {
+      let v1 = +this.formInlinelist.user;
+      let v2 = +this.formInlinelist.password;
+      let v3 = this.formInlinelist.label;
+      let list = [];
+      console.log("ee", v1, v2);
+
+      for (let i = v1; i <= v2; i++) {
+        let v4 = v3 + i.toString(16).toLocaleUpperCase();
+        // console.log(v4);
+        list.push(v4);
+      }
+      this.datadevlist = list;
     },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -467,13 +603,14 @@ export default {
   height: 100%;
 }
 .content {
+  width: 100%;
   justify-content: center;
   align-items: center;
   text-align: center;
   display: flex;
   flex-flow: column;
   >>> .el-form-item {
-    margin: 0;
+    // margin: 0;
   }
 }
 .upload-demo {
@@ -481,6 +618,20 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 50px;
+
+  min-height: 300px;
+  min-width: 450px;
+}
+.updata {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.formbox {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 300px;
+  min-width: 450px;
 }
 </style>

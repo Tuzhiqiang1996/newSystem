@@ -126,6 +126,7 @@ public class TuYListController {
      *         正确的做法是放在循环内 让她每次循环创建新的对象 而不是只更改一条数据
      *
      * @return com.example.common.lang.Result
+     * 未使用
      */
 
     @PostMapping("/tyreceivefilehas")
@@ -157,6 +158,7 @@ public class TuYListController {
      * 拿到数据进行巴拉巴拉..
      *
      * @return com.example.common.lang.Result
+     * 使用中
      */
     @PostMapping("/tyreceivefile")
     public Result tyreceivefile(@RequestBody List<TuYList> savefiles) {
@@ -165,12 +167,21 @@ public class TuYListController {
         }
         TuYList savefile = new TuYList();
         List<TuYList> savefileList = new ArrayList<>(savefiles);
-        for (int i = 0; i < savefileList.size(); i++) {
-            BeanUtil.copyProperties((savefiles.get(i)), savefile);
-            //System.out.println(savefileList.get(i).getDeviceid());
-            //System.out.println(savefile);
-            tuYListService.saveOrUpdate(savefile);
-        }
+        /**
+         * 第一种时间长
+         * 1000/1min
+         * 1000每次
+         */
+//        for (int i = 0; i < savefileList.size(); i++) {
+//            BeanUtil.copyProperties((savefiles.get(i)), savefile);
+//            tuYListService.saveOrUpdate(savefile);
+//        }
+        /**
+         * 第二种时间明显减少
+         * 1000/78ms
+         * 1000每次
+         */
+        tuYListService.saveBatch(savefileList);
         return Result.succ("插入成功！", savefile);
     }
 }

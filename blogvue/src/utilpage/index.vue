@@ -1,10 +1,15 @@
 <!--  -->
 <template>
 <div class='tabbox' >
-  <el-tabs :tab-position="tabPosition" style="height: 100%;">
+  <!-- <el-tabs :tab-position="tabPosition" style="height: 100%;">
     <el-tab-pane label="进制转换" class='pane'><Conversionsystem/></el-tab-pane>
     <el-tab-pane label="数据导出" class='pane'><Exportdata/></el-tab-pane>
-  </el-tabs>
+  </el-tabs> -->
+  <div style="display:flex">
+    <Conversionsystem/>
+    <el-divider direction="vertical" style="height:500px"></el-divider>
+    <Exportdata/>
+  </div>
 </div>
 </template>
 

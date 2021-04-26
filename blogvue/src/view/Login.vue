@@ -64,7 +64,6 @@
             <el-button
               :plain="true"
               class="loginBtn"
-              :disabled="isLoginAble"
               @click="login('ruleForm')"
               v-if="log"
               :loading="islogin"
@@ -76,7 +75,6 @@
               v-else
               :plain="true"
               class="loginBtn"
-              :disabled="isLoginAble"
               @click="regina('ruleForm')"
             >
               注册

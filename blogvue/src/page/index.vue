@@ -63,7 +63,7 @@
           </el-menu-item>
           <el-menu-item index="5" v-show="getUser.status != 2">
             <i class="el-icon-user"></i>
-            <span slot="title">用户列表</span>
+            <span slot="title">用户管理</span>
           </el-menu-item>
           <el-menu-item index="7" v-show="getUser.status != 2">
             <i class="el-icon-finished"></i>
@@ -179,7 +179,7 @@ export default {
       this.isCollapse = !this.isCollapse;
     },
     select(key, keyPath) {
-      console.log(key, keyPath);
+      // console.log(key, keyPath);
       this.defaultactive = key;
       // sessionStorage.setItem("active",key)
     },

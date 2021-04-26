@@ -44,7 +44,7 @@ public class XiaoJListController {
     }
 
     @GetMapping("/searchXjlist")
-    public Result searchData(String deviceid, Integer currentPage, String orderId, String starttime, String endtime,String sn) {
+    public Result searchData(String deviceid, Integer currentPage, String orderId, String starttime, String endtime, String sn) {
 
         if (currentPage == null || currentPage < 1) {
             currentPage = 1;
@@ -87,11 +87,11 @@ public class XiaoJListController {
             queryWrapper.eq("order_id", orderId);
         }
         Integer d = 3;
-        if (num != null ) {
+        if (num != null) {
             if (num >= d) {
                 queryWrapper.ge("check_count", num);
-            }else{
-            queryWrapper.eq("check_count", num);
+            } else {
+                queryWrapper.eq("check_count", num);
             }
         }
 
@@ -106,14 +106,14 @@ public class XiaoJListController {
 //        }
 
         IPage devLists = xiaoJListService.page(page, queryWrapper);
-        if (devLists == null ) {
+        if (devLists == null) {
             return Result.fail("没有数据！");
         }
         return Result.succ("操作成功", devLists);
     }
 
     @PostMapping("/listFix")
-    public Result listFix(@RequestBody XiaoJList xiaoJList){
+    public Result listFix(@RequestBody XiaoJList xiaoJList) {
         XiaoJList xiaoJList1 = xiaoJListService.getById(xiaoJList.getId());
         xiaoJList1.setDeviceid(xiaoJList.getDeviceid());
         xiaoJList1.setAddr1(xiaoJList.getAddr1());
@@ -127,6 +127,18 @@ public class XiaoJListController {
         xiaoJList1.setCheckCount(xiaoJList.getCheckCount());
         return Result.succ("修改成功！");
     }
+    /**
+     * [java.util.List<com.example.entity.Savefile>]
+     *
+     * @return com.example.common.lang.Result
+     * @author Tu
+     * @date 2021/3/31 15:13
+     * @message 第二种 接收一个list 数据
+     * 前端传入数据 [{Id=null, sn=null, orderId=55,},{Id=null, sn=null, orderId=55,}] 每条中的数据与新建的数据结构相似
+     * List<Savefile> savefileList = new ArrayList<>(savefiles);
+     * 拿到数据进行巴拉巴拉..
+     * 使用中
+     */
     @PostMapping("/xjlist")
     public Result xjlist(@RequestBody List<XiaoJList> xjlists) {
         if (xjlists.size() == 0 || xjlists == null) {
@@ -134,13 +146,43 @@ public class XiaoJListController {
         }
         XiaoJList savefile = new XiaoJList();
         List<XiaoJList> savefileList = new ArrayList<>(xjlists);
-        for (int i = 0; i < savefileList.size(); i++) {
-            BeanUtil.copyProperties((xjlists.get(i)), savefile);
-            xiaoJListService.saveOrUpdate(savefile);
-        }
+        /**
+         * 第一种时间长
+         * 1000/1min
+         * 1000每次
+         */
+
+//        for (int i = 0; i < savefileList.size(); i++) {
+//            BeanUtil.copyProperties((xjlists.get(i)), savefile);
+//            xiaoJListService.saveOrUpdate(savefile);
+//        }
+        /**
+         * 第二种时间明显减少
+         * 1000/78ms
+         * 1000每次
+         */
+        xiaoJListService.saveBatch(savefileList);
         return Result.succ("插入成功！", savefile);
     }
-
+    /**
+     * [java.util.HashMap<java.lang.String,java.lang.Object>]
+     *
+     * @return com.example.common.lang.Result
+     * @author Tu
+     * @date 2021/3/31 15:06
+     * @message 循环插入数据库 第一种
+     * 在接收前端数据是  只传入 {id:12,savefiles:["1","2","3",....]}
+     * 此时后端接收  @RequestBody HashMap<String,Object> map
+     * 接受一个List类型和Integer类型参数
+     * 然后 获取数据
+     * // 接收List
+     * List<Savefile> savefiledata = (List<Savefile>) map.get("savefiles");
+     * // 接收另外一个参数
+     * Integer id = (Integer) map.get("id");
+     * 在循环插入时候 一个错误 就是将新建的对象放在循环外
+     * 正确的做法是放在循环内 让她每次循环创建新的对象 而不是只更改一条数据
+     * 未使用
+     */
     @PostMapping("/xjreceivefilehas")
 //    public Result receivefilehas( @RequestParam(value = "id",required = false) Integer id, @RequestParam(value = "savefiles",required = false) List<String> savefiles) {
     public Result tyreceivefilehas(@RequestBody HashMap<String, Object> map) {
