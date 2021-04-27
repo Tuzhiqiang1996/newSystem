@@ -41,7 +41,7 @@
             </el-rate> -->
             <el-tag size="medium">{{
               scope.row.status == 0
-                ? "超级用户"
+                ? "超级管理员"
                 : scope.row.status == 1
                 ? "VIP用户"
                 : "普通用户"

@@ -60,9 +60,8 @@
         style="padding: 10px"
         @tab-click="handleClick"
       >
-        <el-tab-pane label="文件上传" name="1">
+        <el-tab-pane label="单列数据" name="1">
           <el-upload
-            v-show="true"
             class="upload-demo"
             drag
             ref="upload"
@@ -78,10 +77,31 @@
             <div class="el-upload__text">
               将文件拖到此处，或<em>点击上传</em>
             </div>
+            <div class="el-upload__tip" slot="tip">支持单列数据格式.CSV</div>
           </el-upload>
         </el-tab-pane>
-        <el-tab-pane label="数字生成" name="2">
-          <div v-show="true">
+        <el-tab-pane label="多列数据" name="3">
+          <el-upload
+            class="upload-demo"
+            drag
+            ref="upload"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            multiple
+            :auto-upload="false"
+            :file-list="fileList"
+            :on-change="handleChange"
+            :on-success="success"
+            :http-request="uploadFile"
+          >
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">
+              将文件拖到此处，或<em>点击上传</em>
+            </div>
+            <div class="el-upload__tip" slot="tip">支持多列数据格式.CSV</div>
+          </el-upload>
+        </el-tab-pane>
+        <el-tab-pane label="数字导入" name="2">
+          <div>
             <el-form
               ref="formInlinelist"
               :rules="regiRules"
@@ -348,7 +368,7 @@ export default {
         });
     },
     success(response, file, fileList) {
-      console.log(response, file, fileList);
+      console.log("success", response, file, fileList);
       // let reader = new FileReader();
       // reader.readAsText(file.raw);
       // reader.onload = (e) => {
@@ -359,13 +379,83 @@ export default {
       //   this.arraylist(this.datadevlist);
       // };
     },
-    //格式化数组
+    //格式化数组  单列
     arraylist(e) {
-      let list = e.replace(/([.\n\r]+)/g, ",");
+      if (this.activeName == 3) {
+        this.morearrylists();
+      } else {
+        this.onlyarrylist();
+      }
+    },
+    //格式化数字 单列
+    onlyarrylist() {
+      let datalist = this.datadevlist;
+      let list = datalist.replace(/([.\n\r]+)/g, ",");
       let lista = list.split(",");
-      // console.log("list", lista);
       this.Selectcloud(lista);
     },
+    //格式化数字 多列
+    morearrylists() {
+      let datalist = this.datadevlist;
+      let list = datalist.replace(/([.\n\r]+)/g, "#*#");
+      let arr = new Array();
+      arr = list.split(",");
+      if (arr.length == 1) {
+        this.$message({
+          message: "请上传多列数据文件！",
+          showClose: true,
+          type: "error",
+        });
+
+        return false;
+      }
+      let listsplit = list.split("#*#");
+      console.log("list", listsplit);
+      let listpush = [];
+      for (let index = 0; index < listsplit.length; index++) {
+        let listarry = listsplit[index].split(",");
+        listpush.push(listarry);
+      }
+      this.morearrylist(listpush);
+    },
+    /**
+     * 导入须知
+     * 确保文件格式为.csv
+     * 内容不存在中文
+     * 导入对应的属性均为字符串格式
+     * 其他待优化中
+     */
+    morearrylist(data) {
+      let datalist = {};
+      let datalist2 = [];
+      for (let index = 0; index < data.length; index++) {
+        for (let indexs = 0; indexs < data[index].length; indexs++) {
+          datalist = {
+            deviceid: data[index][3],
+            sn: data[index][0],
+            addr1: data[index][1],
+            addr2: data[index][2],
+            testResult: "",
+            testDatetime: "",
+            checkDatetime: "",
+            createTime: "",
+            checkCount: "",
+            orderId: this.orderid,
+            packages: "",
+            packageDatetime: "",
+          };
+        }
+        datalist2.push(datalist);
+      }
+      console.log("morearry", datalist2);
+      //this.refile(datalist2);
+      this.$message({
+        message: "多列数据准备就绪！",
+        showClose: true,
+        type: "success",
+      });
+    },
+    //选择云端
     Selectcloud(lista) {
       if (this.radio == 1) {
         this.datalists(lista, this.orderid);
@@ -519,26 +609,22 @@ export default {
     btns() {
       let flie = this.name;
       let orderid = this.orderid;
-
-      if (!flie || !orderid) {
+      if (!flie || !orderid   ) {
         this.$message({
           message: "请先上传文件！或者orderid为空",
           showClose: true,
           type: "error",
         });
-        return;
+        return false;
       }
       if (this.formInlinelist.user) {
         this.Selectcloud(this.datadevlist);
-        console.log("e", this.datadevlist);
       } else {
         this.$refs.upload.submit();
       }
     },
     //覆盖上传 不走success函数
     uploadFile(params) {
-      console.log("dd", this.formInlinelist.user);
-
       let reader = new FileReader();
       reader.readAsText(params.file);
       reader.onload = (e) => {
@@ -549,8 +635,17 @@ export default {
       };
     },
     handleClick(tab, event) {
-      // console.log(tab, event);
+      if (tab.name == 3) {
+        // console.log('ee',this.activeName);
+        this.name = "666";
+      }
+      //切换清楚数据
+      this.datadevlist = [];
+      this.fileList = [];
+      this.formInlinelist = {};
+      console.log("ee", this.fileList);
     },
+    //数字生成
     onSubmitnum(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -581,6 +676,7 @@ export default {
       }
       this.datadevlist = list;
     },
+    //多列数据
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
