@@ -75,7 +75,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请再次输入"));
-      } else if (value <= this.formInline.password) {
+      } else if (value <= this.formInline.user) {
         callback(new Error("不得小于等于开始值"));
       } else {
         callback();

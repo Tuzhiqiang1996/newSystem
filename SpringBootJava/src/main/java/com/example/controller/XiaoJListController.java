@@ -125,6 +125,7 @@ public class XiaoJListController {
         xiaoJList1.setPackages(xiaoJList.getPackages());
         xiaoJList1.setCheckDatetime(xiaoJList.getCheckDatetime());
         xiaoJList1.setCheckCount(xiaoJList.getCheckCount());
+        xiaoJListService.saveOrUpdate(xiaoJList1);
         return Result.succ("修改成功！");
     }
     /**

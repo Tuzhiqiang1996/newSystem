@@ -314,7 +314,7 @@ export default {
             this.currentpage = data.current;
             this.pagesize = data.size;
 
-            this.num();
+
 
             this.$nextTick(() => {
               this.$refs.filterTable.bodyWrapper.scrollTop = 0;
@@ -364,7 +364,7 @@ export default {
         });
     },
     onSubmit() {
-      this.page(1);
+      this.page(1);this.num();
     },
     resetForm() {
       this.page(1);
@@ -393,7 +393,7 @@ export default {
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.page(1);
+    this.page(1);this.num();
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},

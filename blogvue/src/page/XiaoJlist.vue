@@ -453,8 +453,6 @@ export default {
             this.currentpage = data.current;
             this.pagesize = data.size;
 
-            this.num();
-
             this.$nextTick(() => {
               this.$refs.filterTable.bodyWrapper.scrollTop = 0;
             });
@@ -504,6 +502,7 @@ export default {
     },
     onSubmit() {
       this.page(1);
+      this.num();
     },
     resetForm() {
       this.page(1);
@@ -587,6 +586,7 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     this.page(1);
+    this.num();
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
@@ -635,8 +635,8 @@ export default {
 }
 .formbox {
   display: grid;
-  grid-template-columns: auto auto auto;
-  grid-template-rows: auto auto auto;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
 }
 .input {
   width: 200px;

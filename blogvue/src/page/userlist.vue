@@ -162,7 +162,7 @@
               autocomplete="off"
             ></el-input>
           </el-form-item>
-          <el-form-item>
+          <!-- <el-form-item>
             <el-button
               type="primary"
               @click="submitpasswordForm('passwordForm')"
@@ -171,12 +171,14 @@
             <el-button @click="resetpasswordForm('passwordForm')"
               >重置</el-button
             >
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
-        <!-- <div slot="footer" class="dialog-footer">
-        <el-button @click="innerVisible = false">取 消</el-button>
-        <el-button type="primary" @click="onSavepass">确 定</el-button>
-      </div> -->
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitpasswordForm('passwordForm')"
+            >提交</el-button
+          >
+          <el-button @click="resetpasswordForm('passwordForm')">重置</el-button>
+        </div>
       </el-dialog>
     </el-dialog>
     <el-dialog
@@ -242,13 +244,19 @@
             <el-radio label="2">普通用户</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label-width="100px">
+        <!-- <el-form-item label-width="100px">
           <el-button type="primary" @click="submitregina('reaginuser')">
             提交
           </el-button>
           <el-button @click="resetregina('reaginuser')">重置 </el-button>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitregina('reaginuser')">
+          提交
+        </el-button>
+        <el-button @click="resetregina('reaginuser')">重置 </el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -514,7 +522,7 @@ export default {
             })
             .then((res) => {
               if (res.data.code == 200) {
-                if (res.data.data.status == this.userInfo.status) {
+                if (res.data.data.id == this.userInfo.id) {
                   this.$store.commit("REMOVE_INFO");
                   this.$router.push("/");
                 }
@@ -571,7 +579,7 @@ export default {
                 showClose: true,
                 type: "success",
               });
-              this.pages(1)
+              this.pages(1);
               this.dialogFormregina = false;
             } else {
               this.$message({

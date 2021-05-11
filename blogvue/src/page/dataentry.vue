@@ -28,32 +28,34 @@
           </el-form-item>
         </el-form>
       </div>
-      <div style="padding-top: 25px">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="tb_device_list_re705"
-          placement="top"
-        >
-          <el-radio v-model="radio" label="1">酷宅云</el-radio>
-        </el-tooltip>
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="tb_device_list_re755"
-          placement="top"
-        >
-          <el-radio v-model="radio" label="2">涂鸦云</el-radio>
-        </el-tooltip>
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="tb_device_list_xiaojiang"
-          placement="top"
-        >
-          <el-radio v-model="radio" label="3">小匠</el-radio>
-        </el-tooltip>
-      </div>
+      <el-radio-group v-model="radio" @change="changeradio">
+        <div style="padding-top: 25px">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="tb_device_list_re705"
+            placement="top"
+          >
+            <el-radio v-model="radio" label="1">酷宅云</el-radio>
+          </el-tooltip>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="tb_device_list_re755"
+            placement="top"
+          >
+            <el-radio v-model="radio" label="2">涂鸦云</el-radio>
+          </el-tooltip>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="tb_device_list_xiaojiang"
+            placement="top"
+          >
+            <el-radio v-model="radio" label="3">小匠</el-radio>
+          </el-tooltip>
+        </div>
+      </el-radio-group>
       <el-tabs
         v-model="activeName"
         tab-position="left"
@@ -80,7 +82,7 @@
             <div class="el-upload__tip" slot="tip">支持单列数据格式.CSV</div>
           </el-upload>
         </el-tab-pane>
-        <el-tab-pane label="多列数据" name="3">
+        <el-tab-pane disabled label="多列数据" name="3">
           <el-upload
             class="upload-demo"
             drag
@@ -256,12 +258,12 @@ export default {
       this.fileList = fileList.slice(-1);
 
       this.$message({
-        message: file.raw.type,
+        message: "文件已上传！",
         showClose: true,
-        type: "info",
+        type: "success",
       });
       this.name = file.name;
-      console.log(file.name);
+      console.log(file);
     },
     //解析、查询文件名
     btn() {
@@ -416,7 +418,12 @@ export default {
         let listarry = listsplit[index].split(",");
         listpush.push(listarry);
       }
-      this.morearrylist(listpush);
+
+      if (this.radio == 1) {
+        this.morearrylistku(listpush);
+      } else {
+        this.morearrylist(listpush);
+      }
     },
     /**
      * 导入须知
@@ -424,6 +431,7 @@ export default {
      * 内容不存在中文
      * 导入对应的属性均为字符串格式
      * 其他待优化中
+     * tuya
      */
     morearrylist(data) {
       let datalist = {};
@@ -448,12 +456,48 @@ export default {
         datalist2.push(datalist);
       }
       console.log("morearry", datalist2);
-      //this.refile(datalist2);
+
       this.$message({
         message: "多列数据准备就绪！",
         showClose: true,
         type: "success",
       });
+      this.refile(datalist2);
+    },
+    /**
+     * ku
+     * 插入过程中对于字段太长的  关键在于表中的注释（COMMENT）COMMENT的区别
+     */
+    morearrylistku(data) {
+      console.log("ku");
+
+      let datalist = {};
+      let datalist2 = [];
+      for (let index = 0; index < data.length; index++) {
+        for (let indexs = 0; indexs < data[index].length; indexs++) {
+          datalist = {
+            deviceid: data[index][1],
+            sn: data[index][0],
+            addr1: data[index][2],
+            addr2: data[index][3],
+            testResult: "",
+            testDatetime: "",
+            checkResult: "",
+            checkDatetime: "",
+            checkCount: "",
+            orderId: this.orderid,
+          };
+        }
+        datalist2.push(datalist);
+      }
+      console.log("morearry", datalist2);
+
+      this.$message({
+        message: "多列数据准备就绪！",
+        showClose: true,
+        type: "success",
+      });
+      this.refile(datalist2);
     },
     //选择云端
     Selectcloud(lista) {
@@ -471,8 +515,8 @@ export default {
       let datalist3 = [];
       for (let i = 0; i < lista.length; i++) {
         datalist = {
-          deviceid: lista[i],
-          sn: "",
+          deviceid: "",
+          sn: lista[i],
           addr1: "",
           addr2: "",
           testResult: "",
@@ -491,6 +535,7 @@ export default {
       }
       //1
       this.refile(datalist2);
+
       //2
       // this.filehas(datalist3);
     },
@@ -525,6 +570,14 @@ export default {
     },
     // 第一方法 执行成功
     refile(e) {
+      this.$message({
+        message: "数据插入准备，数量为" + e.length,
+        showClose: true,
+        type: "success",
+      });
+
+      let time = new Date();
+      let timeold = time.getTime();
       let url =
         this.radio == 1
           ? "http://localhost:8081/receivefile"
@@ -541,8 +594,12 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data.code == 200) {
+            let timenew = new Date();
+            let timenew1 = timenew.getTime();
+            let timenew2 = timenew1 - timeold;
+
             this.$message({
-              message: res.data.msg,
+              message: res.data.msg + "耗时：" + timenew2 + "ms",
               showClose: true,
               type: "success",
             });
@@ -609,7 +666,7 @@ export default {
     btns() {
       let flie = this.name;
       let orderid = this.orderid;
-      if (!flie || !orderid   ) {
+      if (!flie || !orderid) {
         this.$message({
           message: "请先上传文件！或者orderid为空",
           showClose: true,
@@ -636,14 +693,14 @@ export default {
     },
     handleClick(tab, event) {
       if (tab.name == 3) {
-        // console.log('ee',this.activeName);
         this.name = "666";
       }
+      // console.log('ee',this.activeName);
       //切换清楚数据
       this.datadevlist = [];
       this.fileList = [];
       this.formInlinelist = {};
-      console.log("ee", this.fileList);
+      // console.log("ee", tab.name);
     },
     //数字生成
     onSubmitnum(formName) {
@@ -677,6 +734,18 @@ export default {
       this.datadevlist = list;
     },
     //多列数据
+
+    //单选
+    changeradio() {
+      // console.log('',this.radio); deviceid
+      if (this.activeName != 3) {
+        this.$message({
+          message: "已选择云端插入位置：deviceid",
+          showClose: true,
+          type: "success",
+        });
+      }
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},

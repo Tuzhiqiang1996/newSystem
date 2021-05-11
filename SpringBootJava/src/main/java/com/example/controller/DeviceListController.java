@@ -26,7 +26,7 @@ import java.util.List;
  * @Package com.example.controller
  * @date 2021/3/16-14:21
  * 前端控制器
- * 设备log
+ *
  */
 @RestController
 public class DeviceListController {
